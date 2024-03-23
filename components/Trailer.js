@@ -34,9 +34,6 @@ const Trailers = props => {
     return null;
   };
 
-  const getDetails = movie => {
-    props.navigation.navigation.navigate("Details", { details: movie });
-  };
   return (
     <>
       {nowPlaying !== undefined ? (
@@ -50,7 +47,6 @@ const Trailers = props => {
                 <List
                   itemImage={item.poster_path}
                   itemID={item.id}
-                  movieDetails={() => getDetails(item)}
                 />
               );
             }}

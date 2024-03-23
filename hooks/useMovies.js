@@ -5,16 +5,16 @@ export const useMovies = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const movieType = ["now_playing", "upcoming", "top_rated"].map(
-      async movie => {
+    const movieTypes = ["now_playing", "upcoming", "top_rated"].map(
+      async movieType => {
         const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${movie}?api_key=${movieKey}&language=en-US&page=1`
+          `https://api.themoviedb.org/3/movie/${movieType}?api_key=${movieKey}&language=en-US&page=1`
         );
         const data = await res.json();
         return data.results;
       }
     );
-    Promise.all([movieType[0], movieType[1], movieType[2]]).then(data =>
+    Promise.all([movieTypes[0], movieTypes[1], movieTypes[2]]).then(data =>
       setMovies(data)
     );
   }, []);
