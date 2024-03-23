@@ -1,20 +1,22 @@
 import React from "react";
 import { Image, StyleSheet, Pressable } from "react-native";
+import { Link } from "expo-router";
 
 const List = (props) => {
   return (
-    <Pressable
-      style={styles.listContainer}
-      key={props.itemID}
-      onPress={props.movieDetails}
-    >
-      <Image
-        source={{
-          uri: `https://image.tmdb.org/t/p/w500${props.itemImage}`
-        }}
-        style={{ width: 150, height: 200 }}
-      />
-    </Pressable>
+    <Link href={`/details/${props.itemID}`} asChild>
+      <Pressable
+        style={styles.listContainer}
+        key={props.itemID}
+      >
+        <Image
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500${props.itemImage}`
+          }}
+          style={{ width: 150, height: 200 }}
+        />
+      </Pressable>
+    </Link>
   );
 }
 
