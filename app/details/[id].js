@@ -13,8 +13,8 @@ import {
 } from "react-native";
 import { WebView } from "react-native-webview";
 import Constants from "expo-constants";
-// import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-// import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { useVideo } from "../../hooks/useVideo";
 
@@ -63,7 +63,7 @@ export default function Details() {
           marginBottom: 20
         }}
       >
-        {/* <FontAwesomeIcon icon={faShareAlt} color={"#fff"} size={32} /> */}
+        <FontAwesomeIcon icon={faShareAlt} color={"#fff"} size={32} />
       </TouchableOpacity>
 
       <View style={{ marginHorizontal: 10 }}>
