@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useLocalSearchParams } from 'expo-router';
+import React from 'react'
+import { useLocalSearchParams, Stack } from 'expo-router';
 import { useGetMovieDetails } from '../../hooks/useGetMovieDetails';
 import {
   View,
@@ -13,8 +13,7 @@ import {
 } from "react-native";
 import { WebView } from "react-native-webview";
 import Constants from "expo-constants";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import { Fontisto } from '@expo/vector-icons';
 
 import { useVideo } from "../../hooks/useVideo";
 
@@ -48,6 +47,11 @@ export default function Details() {
   const key = trailerLink.length === 0 ? "" : trailerLink[0].key;
   return (
     <ScrollView style={{ backgroundColor: "#505050" }}>
+      <Stack.Screen
+        options={{
+          title: movie.title ?? "",
+        }}
+      />
       <View style={styles.statusBar} />
       <Image
         source={{
@@ -63,7 +67,7 @@ export default function Details() {
           marginBottom: 20
         }}
       >
-        <FontAwesomeIcon icon={faShareAlt} color={"#fff"} size={32} />
+        <Fontisto name="share" size={32} color="#ffffff" />
       </TouchableOpacity>
 
       <View style={{ marginHorizontal: 10 }}>
