@@ -23,7 +23,7 @@ const SearchMovies = () => {
   }, [query]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#505050", paddingTop: 50 }}>
+    <View style={{ flex: 1, backgroundColor: "#1B1212", paddingTop: 50 }}>
       <TextInput
         placeholder="Search Movie"
         style={{
