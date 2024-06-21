@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, TextInput, FlatList } from "react-native";
 
 import List from "../../components/List";
+import { useSearch } from "../../hooks/useSearch";
 
 const SearchMovies = () => {
-  const movieKey = process.env.EXPO_PUBLIC_API_KEY
   const [query, setQuery] = useState("");
-  const [movie, setMovie] = useState([]);
+  const movie = useSearch(query)
 
   const searchQuery = text => {
     setQuery(text);
   };
-  useEffect(() => {
-    const querySearch = async () => {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&language=en-US&query=${query}&page=1&include_adult=false`
-      );
-      const data = await res.json();
-      setMovie(data.results);
-    };
-    querySearch();
-  }, [query]);
 
   return (
     <View style={{ flex: 1, backgroundColor: "#1B1212", paddingTop: 50 }}>
