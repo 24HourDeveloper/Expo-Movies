@@ -5,14 +5,12 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   ScrollView,
   Share,
   TouchableOpacity,
   Platform
 } from "react-native";
 import { WebView } from "react-native-webview";
-import Constants from "expo-constants";
 import { Fontisto } from '@expo/vector-icons';
 
 import { useVideo } from "../../hooks/useVideo";
@@ -26,22 +24,20 @@ export default function Details() {
 
   const share = async () => {
     if (Platform.OS === "ios") {
-      console.log("its ios");
-      const resultIos = await Share.share(
+      await Share.share(
         {
           url: `https://www.youtube.com/watch?v=${trailerLink[0].key}`
         },
         { subject: `${movie.title} Trailer` }
       );
     }
-    const resultAndroid = await Share.share(
+    await Share.share(
       {
         title: `${movie.title} Trailer`,
         message: `https://www.youtube.com/watch?v=${trailerLink[0].key}`
       },
       { dialogTitle: "Share Trailers With Friends" }
     );
-    console.log(resultAndroid);
   };
 
   const key = trailerLink.length === 0 ? "" : trailerLink[0].key;
@@ -52,7 +48,6 @@ export default function Details() {
           title: movie.title ?? "",
         }}
       />
-      <View style={styles.statusBar} />
       <Image
         source={{
           uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
@@ -105,10 +100,3 @@ export default function Details() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  statusBar: {
-    backgroundColor: "#C2185B",
-    height: Constants.statusBarHeight
-  }
-});

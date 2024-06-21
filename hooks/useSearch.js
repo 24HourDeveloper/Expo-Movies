@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export const useSearch = ({ query }) => {
+export const useSearch = (query) => {
   const movieKey = process.env.EXPO_PUBLIC_API_KEY
   const [movie, setMovie] = useState([]);
 

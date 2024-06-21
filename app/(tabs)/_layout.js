@@ -1,18 +1,12 @@
 import React from 'react';
 import { Fontisto } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { headerOptions } from '../headerOptions';
 
 export default function TabLayout() {
   return (
     <Tabs screenOptions={{
-      headerStyle: {
-        backgroundColor: '#AA4A44',
-      },
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        color: '#fff',
-        fontSize: 30
-      },
+      ...headerOptions,
       tabBarActiveTintColor: '#fff',
       tabBarInactiveTintColor: '#000'
     }}>
