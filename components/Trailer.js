@@ -12,7 +12,7 @@ import { Image } from 'expo-image';
 import { useMovies } from "../hooks/useMovies";
 import List from "./List";
 
-const Trailers = props => {
+const Trailers = () => {
   const [nowPlaying, upComing, topRated] = useMovies();
 
   const renderPoster = () => {
@@ -96,11 +96,11 @@ export default Trailers;
 
 const styles = StyleSheet.create({
   listTitle: {
-    justifyContent: "flex-start",
     width: "100%",
     padding: 5,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#000"
+    color: "#FFF",
+    textAlign: "center"
   }
 });

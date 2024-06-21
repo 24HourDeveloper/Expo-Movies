@@ -13,7 +13,7 @@ const List = (props) => {
           source={{
             uri: `https://image.tmdb.org/t/p/w500${props.itemImage}`
           }}
-          style={{ width: 150, height: 200 }}
+          style={{ width: 150, height: 200, borderRadius: 8 }}
         />
       </Pressable>
     </Link>
