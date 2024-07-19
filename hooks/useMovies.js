@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const useMovies = () => {
-  const movieKey = process.env.EXPO_PUBLIC_API_KEY
+  const movieKey = process.env.EXPO_PUBLIC_MOVIE_API_KEY
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {

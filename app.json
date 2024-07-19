@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "expo-movie-trailer",
-    "slug": "expo-movie-trailer",
+    "slug": "expo-movies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme":"com.uncodedlifestyle.expo-movie-trailer",
+    "scheme": "com.uncodedlifestyle.expo-movie-trailer",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -22,13 +22,23 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.uncodedlifestyle.expomovies"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b8f75932-8ab9-41b9-b9f2-b2d6678f0d05"
+      }
+    },
+    "owner": "uncodedlifestyle"
   }
 }
