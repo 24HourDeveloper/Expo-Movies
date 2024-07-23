@@ -10,7 +10,7 @@ import {
 import { Image } from 'expo-image';
 
 import { useMovies } from "../hooks/useMovies";
-import List from "./List";
+import MovieList from "./MovieList";
 
 const Trailers = () => {
   const [nowPlaying, upComing, topRated] = useMovies();
@@ -37,52 +37,14 @@ const Trailers = () => {
   return (
     <>
       {nowPlaying !== undefined ? (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: "#1B1212"}}>
           {renderPoster()}
           <Text style={styles.listTitle}>Now Playing</Text>
-          <FlatList
-            data={nowPlaying}
-            renderItem={({ item }) => {
-              return (
-                <List
-                  itemImage={item.poster_path}
-                  itemID={item.id}
-                />
-              );
-            }}
-            keyExtractor={item => item.id.toString()}
-            horizontal
-          />
+          <MovieList movie={nowPlaying} isHorizontal={true} />
           <Text style={styles.listTitle}>Up Coming</Text>
-          <FlatList
-            data={upComing}
-            renderItem={({ item }) => {
-              return (
-                <List
-                  itemImage={item.poster_path}
-                  itemID={item.id}
-                  movieDetails={() => getDetails(item)}
-                />
-              );
-            }}
-            keyExtractor={item => item.id.toString()}
-            horizontal={true}
-          />
+          <MovieList movie={upComing} isHorizontal={true} />
           <Text style={styles.listTitle}>Top Rated</Text>
-          <FlatList
-            data={topRated}
-            renderItem={({ item }) => {
-              return (
-                <List
-                  itemImage={item.poster_path}
-                  itemID={item.id}
-                  movieDetails={() => getDetails(item)}
-                />
-              );
-            }}
-            keyExtractor={item => item.id.toString()}
-            horizontal
-          />
+          <MovieList movie={topRated} isHorizontal={true} />
         </ScrollView>
       ) : (
         <>

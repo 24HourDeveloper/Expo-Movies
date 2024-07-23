@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, TextInput, FlatList } from "react-native";
+import { View, TextInput } from "react-native";
 
-import List from "../../components/List";
 import { useSearch } from "../../hooks/useSearch";
+import MovieList from "../../components/MovieList";
 
 const SearchMovies = () => {
   const [query, setQuery] = useState("");
@@ -29,19 +29,7 @@ const SearchMovies = () => {
         onChangeText={searchQuery}
       />
       <View style={{ flex: 1, paddingHorizontal: 25 }}>
-        <FlatList
-          data={movie}
-          renderItem={({ item }) => (
-            <View style={{ width: 200 }}>
-              <List
-                itemImage={item.poster_path}
-                itemID={item.id}
-              />
-            </View>
-          )}
-          keyExtractor={item => item.id.toString()}
-          numColumns={2}
-        />
+        <MovieList movie={movie} cols={2} />
       </View>
     </View>
   );
