@@ -3,6 +3,7 @@ import { Image, StyleSheet, Pressable, Dimensions } from "react-native";
 import { Link } from "expo-router";
 
 const MovieItem = (props) => {
+  const imgURL = process.env.MOVIE_IMAGE_URL
   let imageWidth = Dimensions.get("screen").width > 400 ? 185 : 150
   let imageHeight = Dimensions.get("screen").width > 400 ? 250 : 200
   return (
@@ -13,7 +14,7 @@ const MovieItem = (props) => {
       >
         <Image
           source={{
-            uri: `https://image.tmdb.org/t/p/w500${props.itemImage}`
+            uri: `${imgURL}${props.itemImage}`
           }}
           style={{ width: imageWidth, height: imageHeight, borderRadius: 8 }}
         />

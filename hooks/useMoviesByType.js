@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 export const useMoviesByType = (type) => {
   const movieKey = process.env.MOVIE_API_KEY
+  const baseURL = process.env.BASE_URL
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const baseURL = "https://api.themoviedb.org/3/movie"
     const controller = new AbortController()
     const signal = controller.signal
 
