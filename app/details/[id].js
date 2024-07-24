@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { useGetMovieDetails } from '../../hooks/useGetMovieDetails';
+import { useMovieDetails } from '../../hooks/useMovieDetails';
 import {
   View,
   Text,
@@ -19,14 +19,16 @@ import { useVideo } from "../../hooks/useVideo";
 
 export default function Details() {
   const { id } = useLocalSearchParams();
-  const movie = useGetMovieDetails(id)
+  const movie = useMovieDetails(id)
   const trailerLink = useVideo(id);
+  const imgURL = process.env.MOVIE_IMAGE_URL
+  const youtubeURL = process.env.YOUTUBE_WATCH_URL
 
   const share = async () => {
     if (Platform.OS === "ios") {
       await Share.share(
         {
-          url: `https://www.youtube.com/watch?v=${trailerLink[0].key}`
+          url: `${youtubeURL}${trailerLink[0].key}`
         },
         { subject: `${movie.title} Trailer` }
       );
@@ -34,7 +36,7 @@ export default function Details() {
     await Share.share(
       {
         title: `${movie.title} Trailer`,
-        message: `https://www.youtube.com/watch?v=${trailerLink[0].key}`
+        message: `${youtubeURL}${trailerLink[0].key}`
       },
       { dialogTitle: "Share Trailers With Friends" }
     );
@@ -50,7 +52,7 @@ export default function Details() {
       />
       <Image
         source={{
-          uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          uri: `${imgURL}${movie.poster_path}`
         }}
         style={{ width: "100%", height: 350, marginBottom: 20 }}
       />

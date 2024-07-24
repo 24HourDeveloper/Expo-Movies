@@ -5,6 +5,6 @@ export const headerOptions = {
   headerTintColor: '#fff',
   headerTitleStyle: {
     fontWeight: 'bold',
-    fontSize: 30
+    fontSize: 20
   }
 }
