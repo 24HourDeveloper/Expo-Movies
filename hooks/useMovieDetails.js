@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useGetMovieDetails = (id) => {
+export const useMovieDetails = (id) => {
   const movieKey = process.env.MOVIE_API_KEY
   const [movie, setMovie] = useState([]);
 

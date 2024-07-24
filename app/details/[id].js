@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { useGetMovieDetails } from '../../hooks/useGetMovieDetails';
+import { useMovieDetails } from '../../hooks/useMovieDetails';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import { useVideo } from "../../hooks/useVideo";
 
 export default function Details() {
   const { id } = useLocalSearchParams();
-  const movie = useGetMovieDetails(id)
+  const movie = useMovieDetails(id)
   const trailerLink = useVideo(id);
 
   const share = async () => {

@@ -1,10 +1,10 @@
 import React from 'react'
 import { View } from 'react-native'
 import MovieList from './MovieList'
-import { useFetchMoviesByType } from '../hooks/useNowPlayingMovies'
+import { useMoviesByType } from '../hooks/useMoviesByType'
 
 function NowPlaying() {
-  const movies = useFetchMoviesByType("now_playing")
+  const movies = useMoviesByType("now_playing")
   if(movies.length === 0) return null
 
   return (

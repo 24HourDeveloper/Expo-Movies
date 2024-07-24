@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useFetchMoviesByType = (type) => {
+export const useMoviesByType = (type) => {
   const movieKey = process.env.MOVIE_API_KEY
   const [movies, setMovies] = useState([]);
 
