@@ -40,3 +40,12 @@ export const MOVIE_TRAILER_QUERY = gql`
     }
   }
 `
+
+export const SEARCH_MOVIE_QUERY = gql`
+  query SearchMovies($query: String) {
+    search(query: $query) {
+      id
+      poster_path
+    }
+  }
+`
