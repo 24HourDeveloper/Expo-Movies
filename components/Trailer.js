@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FlatList,
   Text,
   StyleSheet,
   Pressable,
@@ -8,21 +7,23 @@ import {
   ActivityIndicator
 } from "react-native";
 import { Image } from 'expo-image';
+import { gql, useQuery } from '@apollo/client';
 
 import { useMovies } from "../hooks/useMovies";
 import MovieList from "./MovieList";
+import { MOVIES_QUERY } from  "../gql/Query"
 
 const Trailers = () => {
-  const [nowPlaying, upComing, topRated] = useMovies();
+  const { loading, error, data } = useQuery(MOVIES_QUERY)
 
   const renderPoster = () => {
-    if (nowPlaying !== undefined) {
+    if (data !== undefined) {
       return (
-        <Pressable key={nowPlaying[0].id}>
+        <Pressable key={data.nowPlaying[0]?.id}>
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${
-                nowPlaying[Math.floor(Math.random() * 9)].poster_path
+                data.nowPlaying[Math.floor(Math.random() * 9)]?.poster_path
               }`
             }}
             contentFit="cover"
@@ -36,15 +37,13 @@ const Trailers = () => {
 
   return (
     <>
-      {nowPlaying !== undefined ? (
+      {data !== undefined ? (
         <ScrollView style={{backgroundColor: "#1B1212"}}>
           {renderPoster()}
           <Text style={styles.listTitle}>Now Playing</Text>
-          <MovieList movie={nowPlaying} isHorizontal={true} />
+          <MovieList movie={data?.nowPlaying} isHorizontal={true} />
           <Text style={styles.listTitle}>Up Coming</Text>
-          <MovieList movie={upComing} isHorizontal={true} />
-          <Text style={styles.listTitle}>Top Rated</Text>
-          <MovieList movie={topRated} isHorizontal={true} />
+          <MovieList movie={data?.upcoming} isHorizontal={true} />
         </ScrollView>
       ) : (
         <>
