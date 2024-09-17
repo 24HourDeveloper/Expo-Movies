@@ -7,14 +7,13 @@ import {
   ActivityIndicator
 } from "react-native";
 import { Image } from 'expo-image';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
-import { useMovies } from "../hooks/useMovies";
 import MovieList from "./MovieList";
 import { MOVIES_QUERY } from  "../gql/Query"
 
 const Trailers = () => {
-  const { loading, error, data } = useQuery(MOVIES_QUERY)
+  const { data } = useQuery(MOVIES_QUERY)
 
   const renderPoster = () => {
     if (data !== undefined) {

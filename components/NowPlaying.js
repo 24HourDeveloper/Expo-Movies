@@ -5,7 +5,7 @@ import MovieList from './MovieList'
 import { CATEGORY_MOVIES_QUERY } from '../gql/Query';
 
 function NowPlaying() {
-  const { loading, error, data } = useQuery(CATEGORY_MOVIES_QUERY, { variables: { page: 1, category: "now_playing"}})
+  const { data } = useQuery(CATEGORY_MOVIES_QUERY, { variables: { page: 1, category: "now_playing"}})
 
   if(data === undefined) return null
 

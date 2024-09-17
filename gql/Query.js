@@ -14,10 +14,21 @@ export const MOVIES_QUERY = gql`
 `;
 
 export const CATEGORY_MOVIES_QUERY = gql`
-  query Movie($page: Int, $category: String) {
+  query Movies($page: Int, $category: String) {
     movies(page: $page, category: $category) {
       id
       poster_path
     }
   }
 `;
+
+export const MOVIE_DETAILS_QUERY = gql`
+  query Movie($id: String) {
+    movie(id: $id) {
+      title
+      poster_path
+      overview
+      release_date
+    }
+  }
+`
