@@ -32,3 +32,11 @@ export const MOVIE_DETAILS_QUERY = gql`
     }
   }
 `
+
+export const MOVIE_TRAILER_QUERY = gql`
+  query Trailers($id: String) {
+    trailers(id: $id) {
+      key
+    }
+  }
+`

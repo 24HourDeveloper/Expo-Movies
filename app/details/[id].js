@@ -1,6 +1,5 @@
 import React from 'react'
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { useMovieDetails } from '../../hooks/useMovieDetails';
 import {
   View,
   Text,
@@ -14,15 +13,15 @@ import { WebView } from "react-native-webview";
 import { Fontisto } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
-import { useVideo } from "../../hooks/useVideo";
-import { MOVIE_DETAILS_QUERY } from '../../gql/Query';
+import { MOVIE_DETAILS_QUERY, MOVIE_TRAILER_QUERY } from '../../gql/Query';
 
 
 
 export default function Details() {
   const { id } = useLocalSearchParams();
   const { data } = useQuery(MOVIE_DETAILS_QUERY, { variables: { id: id }})
-  const trailerLink = useVideo(id);
+  const { data: trailerData } = useQuery(MOVIE_TRAILER_QUERY, { variables: { id: id }})
+
   const imgURL = process.env.MOVIE_IMAGE_URL
   const youtubeURL = process.env.YOUTUBE_WATCH_URL
 
@@ -30,7 +29,7 @@ export default function Details() {
     if (Platform.OS === "ios") {
       await Share.share(
         {
-          url: `${youtubeURL}${trailerLink[0].key}`
+          url: `${youtubeURL}${trailerData?.trailers[0].key}`
         },
         { subject: `${data?.movie.title} Trailer` }
       );
@@ -38,13 +37,13 @@ export default function Details() {
     await Share.share(
       {
         title: `${data?.movie.title} Trailer`,
-        message: `${youtubeURL}${trailerLink[0].key}`
+        message: `${youtubeURL}${trailerData?.trailers[0].key}`
       },
       { dialogTitle: "Share Trailers With Friends" }
     );
   };
 
-  const key = trailerLink.length === 0 ? "" : trailerLink[0].key;
+  const key = trailerData?.trailers.length === 0 ? "" : trailerData?.trailers[0].key;
   return (
     <ScrollView style={{ backgroundColor: "#505050" }}>
       <Stack.Screen
