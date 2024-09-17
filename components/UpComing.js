@@ -2,10 +2,10 @@ import React from 'react'
 import { View } from 'react-native'
 import { useQuery } from '@apollo/client';
 import MovieList from './MovieList'
-import { UPCOMING_MOVIES_QUERY } from '../gql/Query';
+import { CATEGORY_MOVIES_QUERY } from '../gql/Query';
 
 function UpComing() {
-  const { loading, error, data } = useQuery(UPCOMING_MOVIES_QUERY, { variables: { page: 1, category: "upcoming"}})
+  const { loading, error, data } = useQuery(CATEGORY_MOVIES_QUERY, { variables: { page: 1, category: "upcoming"}})
 
   if(data === undefined) return null
 

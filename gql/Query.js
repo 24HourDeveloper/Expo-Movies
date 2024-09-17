@@ -13,7 +13,7 @@ export const MOVIES_QUERY = gql`
   }
 `;
 
-export const UPCOMING_MOVIES_QUERY = gql`
+export const CATEGORY_MOVIES_QUERY = gql`
   query Movie($page: Int, $category: String) {
     movies(page: $page, category: $category) {
       id
