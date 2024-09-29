@@ -1,10 +1,10 @@
-import React from "react";
 import {
   Text,
   StyleSheet,
   Pressable,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  View
 } from "react-native";
 import { Image } from 'expo-image';
 import { useQuery } from '@apollo/client';
@@ -40,14 +40,14 @@ const Trailers = () => {
         <ScrollView style={{backgroundColor: "#1B1212"}}>
           {renderPoster()}
           <Text style={styles.listTitle}>Now Playing</Text>
-          <MovieList movie={data?.nowPlaying} isHorizontal={true} />
+          <MovieList movies={data?.nowPlaying} isHorizontal={true} />
           <Text style={styles.listTitle}>Up Coming</Text>
-          <MovieList movie={data?.upcoming} isHorizontal={true} />
+          <MovieList movies={data?.upcoming} isHorizontal={true} />
         </ScrollView>
       ) : (
-        <>
-          <ActivityIndicator size="large" color="#fff" />
-        </>
+        <View style={{flex: 1, paddingTop: 10, alignItems: 'center', justifyContent: "center", backgroundColor: '#1B1212'}}>
+          <ActivityIndicator size="large" color="#AA4A44" />
+        </View>
       )}
     </>
   );

@@ -9,7 +9,7 @@ if (__DEV__) {
 
 // Initialize Apollo Client
 const client = new ApolloClient({
-  uri: 'http://10.0.0.3:4000/graphql',
+  uri: 'https://eq-movie-seven.vercel.app/graphql',
   cache: new InMemoryCache()
 });
 

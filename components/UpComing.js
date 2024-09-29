@@ -1,18 +1,24 @@
-import React from 'react'
-import { View } from 'react-native'
-import { useQuery } from '@apollo/client';
 import MovieList from './MovieList'
-import { CATEGORY_MOVIES_QUERY } from '../gql/Query';
+import MoviesContainer from './MoviesContainer';
+import usePagination from '../hooks/usePagination';
 
 function UpComing() {
-  const { data } = useQuery(CATEGORY_MOVIES_QUERY, { variables: { page: 1, category: "upcoming"}})
+  const { movies, page, setPage, refetch, loading } = usePagination("upcoming")
 
-  if(data === undefined) return null
+  if(movies === null) return null
 
   return (
-    <View style={{flex: 1, paddingTop: 10, alignItems: 'center', backgroundColor: '#1B1212'}}>
-      <MovieList movie={data?.movies} cols={2} />
-    </View>
+    <MoviesContainer>
+      <MovieList
+        cols={2}
+        movies={movies}
+        loading={loading}
+        fetchNextPage={() => {
+          setPage(page +  1)
+          refetch({page: page + 1})
+        }}
+      />
+    </MoviesContainer>
   )
 }
 

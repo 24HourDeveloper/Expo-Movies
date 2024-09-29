@@ -1,4 +1,3 @@
-import React from "react";
 import { View, TextInput } from "react-native";
 import { useQuery } from '@apollo/client';
 
@@ -33,7 +32,7 @@ const SearchMovies = () => {
         onChangeText={searchQuery}
       />
       <View style={{ flex: 1, paddingHorizontal: 25 }}>
-        <MovieList movie={data?.search} cols={2} />
+        <MovieList movies={data?.search} cols={2} />
       </View>
     </View>
   );
