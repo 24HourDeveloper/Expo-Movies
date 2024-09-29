@@ -1,28 +1,28 @@
-import React from "react";
 import {
-  FlatList,
   Text,
   StyleSheet,
   Pressable,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  View
 } from "react-native";
 import { Image } from 'expo-image';
+import { useQuery } from '@apollo/client';
 
-import { useMovies } from "../hooks/useMovies";
 import MovieList from "./MovieList";
+import { MOVIES_QUERY } from  "../gql/Query"
 
 const Trailers = () => {
-  const [nowPlaying, upComing, topRated] = useMovies();
+  const { data } = useQuery(MOVIES_QUERY)
 
   const renderPoster = () => {
-    if (nowPlaying !== undefined) {
+    if (data !== undefined) {
       return (
-        <Pressable key={nowPlaying[0].id}>
+        <Pressable key={data.nowPlaying[0]?.id}>
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${
-                nowPlaying[Math.floor(Math.random() * 9)].poster_path
+                data.nowPlaying[Math.floor(Math.random() * 9)]?.poster_path
               }`
             }}
             contentFit="cover"
@@ -36,20 +36,18 @@ const Trailers = () => {
 
   return (
     <>
-      {nowPlaying !== undefined ? (
+      {data !== undefined ? (
         <ScrollView style={{backgroundColor: "#1B1212"}}>
           {renderPoster()}
           <Text style={styles.listTitle}>Now Playing</Text>
-          <MovieList movie={nowPlaying} isHorizontal={true} />
+          <MovieList movies={data?.nowPlaying} isHorizontal={true} />
           <Text style={styles.listTitle}>Up Coming</Text>
-          <MovieList movie={upComing} isHorizontal={true} />
-          <Text style={styles.listTitle}>Top Rated</Text>
-          <MovieList movie={topRated} isHorizontal={true} />
+          <MovieList movies={data?.upcoming} isHorizontal={true} />
         </ScrollView>
       ) : (
-        <>
-          <ActivityIndicator size="large" color="#fff" />
-        </>
+        <View style={{flex: 1, paddingTop: 10, alignItems: 'center', justifyContent: "center", backgroundColor: '#1B1212'}}>
+          <ActivityIndicator size="large" color="#AA4A44" />
+        </View>
       )}
     </>
   );

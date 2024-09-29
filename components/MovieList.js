@@ -1,20 +1,37 @@
-import React from 'react'
-import { FlatList, View } from "react-native";
+import { FlatList, ActivityIndicator, View } from "react-native";
 import MovieItem from './MovieItem';
 
-function MovieList({ movie, cols, isHorizontal }) {
+function MovieList({
+  cols,
+  isHorizontal,
+  movies,
+  loading,
+  fetchNextPage
+}) {
   return (
     <FlatList
-      data={movie}
+      data={movies}
       renderItem={({ item }) => (
         <MovieItem
-          itemImage={item.poster_path}
           itemID={item.id}
+          itemImage={item.poster_path}
         />
       )}
       keyExtractor={item => item.id.toString()}
       numColumns={cols}
       horizontal={isHorizontal}
+      onEndReached={fetchNextPage}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={() => {
+        if(loading) {
+          return (
+            <View style={{ padding: 10 }}>
+              <ActivityIndicator size="large" color="#AA4A44" />
+            </View>
+          )
+        }
+        return null
+      }}
     />
   )
 }

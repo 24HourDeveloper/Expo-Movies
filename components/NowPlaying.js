@@ -1,16 +1,24 @@
-import React from 'react'
-import { View } from 'react-native'
 import MovieList from './MovieList'
-import { useMoviesByType } from '../hooks/useMoviesByType'
+import usePagination from '../hooks/usePagination';
+import MoviesContainer from './MoviesContainer';
 
 function NowPlaying() {
-  const movies = useMoviesByType("now_playing")
-  if(movies.length === 0) return null
+  const { movies, page, setPage, refetch, loading } = usePagination("now_playing")
+
+  if(movies === null) return null
 
   return (
-    <View style={{flex: 1, paddingTop: 10, alignItems: 'center', backgroundColor: '#1B1212'}}>
-      <MovieList movie={movies} cols={2} />
-    </View>
+    <MoviesContainer>
+      <MovieList
+        cols={2}
+        movies={movies}
+        loading={loading}
+        fetchNextPage={() => {
+          setPage(page +  1)
+          refetch({page: page + 1})
+        }}
+      />
+    </MoviesContainer>
   )
 }
 

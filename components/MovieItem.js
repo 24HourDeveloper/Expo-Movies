@@ -1,4 +1,3 @@
-import React from "react";
 import { Image, StyleSheet, Pressable, Dimensions } from "react-native";
 import { Link } from "expo-router";
 

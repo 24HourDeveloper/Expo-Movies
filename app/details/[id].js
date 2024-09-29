@@ -1,6 +1,5 @@
 import React from 'react'
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { useMovieDetails } from '../../hooks/useMovieDetails';
 import {
   View,
   Text,
@@ -12,15 +11,17 @@ import {
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { Fontisto } from '@expo/vector-icons';
+import { useQuery } from '@apollo/client';
 
-import { useVideo } from "../../hooks/useVideo";
+import { MOVIE_DETAILS_QUERY, MOVIE_TRAILER_QUERY } from '../../gql/Query';
 
 
 
 export default function Details() {
   const { id } = useLocalSearchParams();
-  const movie = useMovieDetails(id)
-  const trailerLink = useVideo(id);
+  const { data } = useQuery(MOVIE_DETAILS_QUERY, { variables: { id: id }})
+  const { data: trailerData } = useQuery(MOVIE_TRAILER_QUERY, { variables: { id: id }})
+
   const imgURL = process.env.MOVIE_IMAGE_URL
   const youtubeURL = process.env.YOUTUBE_WATCH_URL
 
@@ -28,31 +29,31 @@ export default function Details() {
     if (Platform.OS === "ios") {
       await Share.share(
         {
-          url: `${youtubeURL}${trailerLink[0].key}`
+          url: `${youtubeURL}${trailerData?.trailers[0].key}`
         },
-        { subject: `${movie.title} Trailer` }
+        { subject: `${data?.movie.title} Trailer` }
       );
     }
     await Share.share(
       {
-        title: `${movie.title} Trailer`,
-        message: `${youtubeURL}${trailerLink[0].key}`
+        title: `${data?.movie.title} Trailer`,
+        message: `${youtubeURL}${trailerData?.trailers[0].key}`
       },
       { dialogTitle: "Share Trailers With Friends" }
     );
   };
 
-  const key = trailerLink.length === 0 ? "" : trailerLink[0].key;
+  const key = trailerData?.trailers.length === 0 ? "" : trailerData?.trailers[0].key;
   return (
     <ScrollView style={{ backgroundColor: "#505050" }}>
       <Stack.Screen
         options={{
-          title: movie.title ?? "",
+          title: data?.movie.title ?? "",
         }}
       />
       <Image
         source={{
-          uri: `${imgURL}${movie.poster_path}`
+          uri: `${imgURL}${data?.movie.poster_path}`
         }}
         style={{ width: "100%", height: 350, marginBottom: 20 }}
       />
@@ -77,13 +78,13 @@ export default function Details() {
             marginBottom: 20
           }}
         >
-          {movie.title}
+          {data?.movie.title}
         </Text>
         <Text style={{ color: "#fff", marginBottom: 20 }}>
-          {movie.overview}
+          {data?.movie.overview}
         </Text>
         <Text style={{ color: "#fff" }}>
-          Release Date: {movie.release_date}
+          Release Date: {data?.movie.release_date}
         </Text>
       </View>
       <WebView
