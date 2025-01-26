@@ -12,7 +12,7 @@ const SearchMovies = () => {
     variables: { query: debouncedSearch }, skip: debouncedSearch === ""
   })
 
-  const searchQuery = text => {
+  const searchQuery = (text: string) => {
     setQuery(text);
   };
   return (
