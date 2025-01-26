@@ -1,21 +1,20 @@
 import React from 'react';
 import { Fontisto } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Trailers from '../../components/Trailer';
 import Search from './search'
 import NowPlaying from '../../components/NowPlaying';
 import UpComing from '../../components/UpComing';
 
 const Top = createMaterialTopTabNavigator();
-const Bottom = createMaterialBottomTabNavigator();
+const Bottom = createBottomTabNavigator();
 
 const BottomTab = () => {
   return (
     <Bottom.Navigator
-      activeColor='white'
-      barStyle={{ backgroundColor: '#AA4A44', height: 60 }}
-      activeIndicatorStyle={{backgroundColor: null}}
+      barStyle={{ backgroundColor: '#AA4A44'}}
+      screenOptions={{headerShown: false}}
     >
       <Bottom.Screen
         name="Home"
@@ -25,8 +24,8 @@ const BottomTab = () => {
             backgroundColor: '#AA4A44',
             borderColor: '#AA4A44',
           },
-          title: null,
-          tabBarIcon: ({ color }) => <Fontisto size={28} name="film" color={color} />
+          tabBarIcon: ({ color, focused }) => <Fontisto size={28} name="film" color={focused ? 'white': color}/>,
+          tabBarShowLabel: false
         }}
       />
       <Bottom.Screen
@@ -37,8 +36,8 @@ const BottomTab = () => {
             backgroundColor: '#AA4A44',
             borderColor: '#AA4A44'
           },
-          title: null,
-          tabBarIcon: ({ color }) => <Fontisto size={28} name="search" color={color} />
+          tabBarIcon: ({ color, focused }) => <Fontisto size={28} name="search" color={focused ? 'white': color} />,
+          tabBarShowLabel: false
         }}
       />
     </Bottom.Navigator>
@@ -51,7 +50,7 @@ export default function TabLayout() {
       <Top.Navigator
         screenOptions={{
           tabBarActiveTintColor: 'white',
-          tabBarLabelStyle: {fontSize: 16},
+          tabBarLabelStyle: {fontSize: 16, textTransform: 'capitalize'},
           tabBarIndicatorStyle: {
             backgroundColor: 'white',
           },
@@ -62,7 +61,7 @@ export default function TabLayout() {
           component={BottomTab}
           options={{
             title: 'Home',
-            tabBarStyle: {backgroundColor: '#AA4A44'}
+            tabBarStyle: {backgroundColor: '#AA4A44'},
           }}
         />
         <Top.Screen

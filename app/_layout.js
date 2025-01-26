@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router/stack';
 import { ApolloProvider } from '@apollo/client';
-import { headerOptions } from './headerOptions';
+import headerOptions from './headerOptions';
 import client from '../graphql/apolloClient';
 
 export default function AppLayout() {

@@ -1,4 +1,4 @@
-export const headerOptions = {
+export default {
   headerStyle: {
     backgroundColor: '#AA4A44',
   },
