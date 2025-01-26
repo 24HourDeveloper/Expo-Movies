@@ -13,7 +13,6 @@ const Bottom = createBottomTabNavigator();
 const BottomTab = () => {
   return (
     <Bottom.Navigator
-      barStyle={{ backgroundColor: '#AA4A44'}}
       screenOptions={{headerShown: false}}
     >
       <Bottom.Screen

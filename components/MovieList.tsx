@@ -1,13 +1,26 @@
 import { FlatList, ActivityIndicator, View } from "react-native";
 import MovieItem from './MovieItem';
 
+type Movie = {
+  id: number,
+  poster_path: string
+}
+
+type MovieListProps = {
+  cols: number,
+  isHorizontal?: boolean,
+  movies: Movie[],
+  loading?: boolean,
+  fetchNextPage?: () => void
+}
+
 function MovieList({
   cols,
   isHorizontal,
   movies,
   loading,
   fetchNextPage
-}) {
+}: MovieListProps) {
   return (
     <FlatList
       data={movies}
