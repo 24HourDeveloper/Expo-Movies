@@ -1,8 +1,8 @@
 import { useEffect, useState, Dispatch, SetStateAction } from 'react'
 
-type UseDebounceSearchReturn = [string, Dispatch<SetStateAction<string>>, string];
+type UseDebounceSearchTypes = [string, Dispatch<SetStateAction<string>>, string];
 
-export default (): UseDebounceSearchReturn => {
+export default (): UseDebounceSearchTypes => {
   const [query, setQuery] = useState<string>("");
   const [debouncedSearch, setDebounceSearch] = useState<string>(query)
 
