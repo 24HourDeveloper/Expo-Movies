@@ -1,11 +1,12 @@
 import React from 'react';
-import { Fontisto } from '@expo/vector-icons';
+import { Fontisto, AntDesign } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Trailers from '../../components/Trailer';
 import Search from './search'
 import NowPlaying from '../../components/NowPlaying';
 import UpComing from '../../components/UpComing';
+import Profile from '../profile';
 
 const Top = createMaterialTopTabNavigator();
 const Bottom = createBottomTabNavigator();
@@ -28,7 +29,7 @@ const BottomTab = () => {
         }}
       />
       <Bottom.Screen
-        name="Settings"
+        name="Search"
         component={Search}
         options={{
           tabBarStyle: {
@@ -36,6 +37,18 @@ const BottomTab = () => {
             borderColor: '#AA4A44'
           },
           tabBarIcon: ({ color, focused }) => <Fontisto size={28} name="search" color={focused ? 'white': color} />,
+          tabBarShowLabel: false
+        }}
+      />
+      <Bottom.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarStyle: {
+            backgroundColor: '#AA4A44',
+            borderColor: '#AA4A44'
+          },
+          tabBarIcon: ({ color, focused }) => <AntDesign size={28} name="user" color={focused ? 'white': color} />,
           tabBarShowLabel: false
         }}
       />
