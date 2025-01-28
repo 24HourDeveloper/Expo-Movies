@@ -45,7 +45,7 @@ export default function Details() {
 
   const key = trailerData?.trailers.length === 0 ? "" : trailerData?.trailers[0].key;
   return (
-    <ScrollView style={{ backgroundColor: "#505050" }}>
+    <ScrollView style={{ backgroundColor: "#1B1212" }}>
       <Stack.Screen
         options={{
           title: data?.movie.title ?? "",
