@@ -4,16 +4,16 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  View
+  View,
+  Image,
 } from "react-native";
-import { Image } from 'expo-image';
-import { useQuery } from '@apollo/client';
+import { useQuery } from "@apollo/client";
 
 import MovieList from "./MovieList";
-import { MOVIES_QUERY } from  "../gql/Query"
+import { MOVIES_QUERY } from "../gql/Query";
 
 const Trailers = () => {
-  const { data } = useQuery(MOVIES_QUERY)
+  const { data } = useQuery(MOVIES_QUERY);
 
   const renderPoster = () => {
     if (data !== undefined) {
@@ -23,9 +23,9 @@ const Trailers = () => {
             source={{
               uri: `https://image.tmdb.org/t/p/w500${
                 data.nowPlaying[Math.floor(Math.random() * 9)]?.poster_path
-              }`
+              }`,
             }}
-            contentFit="cover"
+            resizeMode="cover"
             style={{ width: "100%", height: 450 }}
           />
         </Pressable>
@@ -37,7 +37,7 @@ const Trailers = () => {
   return (
     <>
       {data !== undefined ? (
-        <ScrollView style={{backgroundColor: "#1B1212"}}>
+        <ScrollView style={{ backgroundColor: "#1B1212" }}>
           {renderPoster()}
           <Text style={styles.listTitle}>Now Playing</Text>
           <MovieList movies={data?.nowPlaying} isHorizontal={true} />
@@ -45,7 +45,15 @@ const Trailers = () => {
           <MovieList movies={data?.upcoming} isHorizontal={true} />
         </ScrollView>
       ) : (
-        <View style={{flex: 1, paddingTop: 10, alignItems: 'center', justifyContent: "center", backgroundColor: '#1B1212'}}>
+        <View
+          style={{
+            flex: 1,
+            paddingTop: 10,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#1B1212",
+          }}
+        >
           <ActivityIndicator size="large" color="#AA4A44" />
         </View>
       )}
@@ -61,6 +69,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#FFF",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

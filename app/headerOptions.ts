@@ -1,6 +1,6 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-export const headerOptions: NativeStackNavigationOptions = {
+export default {
   headerStyle: {
     backgroundColor: '#AA4A44',
   },
@@ -9,4 +9,4 @@ export const headerOptions: NativeStackNavigationOptions = {
     fontWeight: 'bold',
     fontSize: 20
   }
-}
+} as NativeStackNavigationOptions;
