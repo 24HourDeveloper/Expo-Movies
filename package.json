@@ -1,5 +1,5 @@
 {
-  "name": "expo-movie-trailer",
+  "name": "social-entertainment",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
+    "@apollo/server": "^4.12.1",
     "@expo/metro-runtime": "~5.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
@@ -21,7 +22,7 @@
     "expo-linking": "~7.1.5",
     "expo-router": "~5.0.7",
     "expo-status-bar": "~2.2.3",
-    "graphql": "^15.8.0",
+    "graphql": "^16.11.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",

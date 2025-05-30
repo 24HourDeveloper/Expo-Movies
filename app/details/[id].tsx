@@ -22,8 +22,6 @@ export default function Details() {
     variables: { id: id },
   });
 
-  console.log(process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL);
-
   const imgURL = process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL;
   const youtubeURL = process.env.EXPO_PUBLIC_YOUTUBE_WATCH_URL;
 
