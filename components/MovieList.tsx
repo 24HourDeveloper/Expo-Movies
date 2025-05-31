@@ -11,6 +11,7 @@ import { WebMovieList } from "./WebMovieList";
 export type Movie = {
   id: number;
   poster_path: string;
+  backdrop_path: string;
 };
 
 type MovieListTypes = {

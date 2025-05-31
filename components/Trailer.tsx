@@ -1,11 +1,4 @@
-import {
-  Text,
-  StyleSheet,
-  Pressable,
-  ActivityIndicator,
-  View,
-  Image,
-} from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 import MovieList from "./MovieList";
 import usePagination from "../hooks/usePagination";
@@ -15,30 +8,11 @@ const Trailers = () => {
   const { movies: data, page, setPage, refetch, loading } = usePagination();
 
   if (data === null || data === undefined || data.length === 0) return null;
-  // const renderPoster = () => {
-  //   if (data !== undefined) {
-  //     return (
-  //       <Pressable key={data[0]?.id}>
-  //         <Image
-  //           source={{
-  //             uri: `https://image.tmdb.org/t/p/w500${
-  //               data[Math.floor(Math.random() * 9)]?.poster_path
-  //             }`,
-  //           }}
-  //           resizeMode="cover"
-  //           style={{ width: "100%", height: 450 }}
-  //         />
-  //       </Pressable>
-  //     );
-  //   }
-  //   return null;
-  // };
 
   return (
     <>
       {data !== undefined ? (
         <MoviesContainer>
-          {/* {renderPoster()} */}
           <MovieList
             movies={data}
             loading={loading}
@@ -64,15 +38,5 @@ const Trailers = () => {
     </>
   );
 };
-export default Trailers;
 
-// const styles = StyleSheet.create({
-//   listTitle: {
-//     width: "100%",
-//     padding: 5,
-//     fontSize: 20,
-//     fontWeight: "bold",
-//     color: "#FFF",
-//     textAlign: "center",
-//   },
-// });
+export default Trailers;

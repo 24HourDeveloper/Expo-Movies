@@ -5,6 +5,7 @@ export const moviesTypeDefs = `
     poster_path: String
     overview: String
     release_date: String
+    backdrop_path: String
   }
   type Trailer {
     key: String

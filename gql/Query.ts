@@ -14,6 +14,7 @@ export const MOVIES_QUERY = gql`
     movies(page: $page) {
       id
       poster_path
+      backdrop_path
     }
   }
 `;
