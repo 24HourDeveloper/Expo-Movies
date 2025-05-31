@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Social Entertainment",
-    "slug": "social-entertainment",
+    "slug": "expo-movies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -28,7 +28,8 @@
       "package": "com.uncodedlifestyle.social-entertainment"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "server"
     },
     "plugins": [
       "expo-router"

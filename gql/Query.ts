@@ -1,21 +1,17 @@
 import { gql } from '@apollo/client';
 
-export const MOVIES_QUERY = gql`
-  query {
-    nowPlaying: movies(page: 1, category: "now_playing") {
-      id
-      poster_path
-    }
-    upcoming: movies(page: 1, category: "upcoming") {
-      id
-      poster_path
-    }
-  }
-`;
+// export const MOVIES_QUERY = gql`
+//   query {
+//     nowPlaying: movies(page: 1) {
+//       id
+//       poster_path
+//     }
+//   }
+// `;
 
-export const CATEGORY_MOVIES_QUERY = gql`
-  query Movies($page: Int, $category: String) {
-    movies(page: $page, category: $category) {
+export const MOVIES_QUERY = gql`
+  query Movies($page: Int) {
+    movies(page: $page) {
       id
       poster_path
     }

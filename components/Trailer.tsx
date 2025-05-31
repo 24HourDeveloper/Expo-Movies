@@ -18,11 +18,11 @@ const Trailers = () => {
   const renderPoster = () => {
     if (data !== undefined) {
       return (
-        <Pressable key={data.nowPlaying[0]?.id}>
+        <Pressable key={data.movies[0]?.id}>
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${
-                data.nowPlaying[Math.floor(Math.random() * 9)]?.poster_path
+                data.movies[Math.floor(Math.random() * 9)]?.poster_path
               }`,
             }}
             resizeMode="cover"
@@ -40,9 +40,7 @@ const Trailers = () => {
         <ScrollView style={{ backgroundColor: "#1B1212" }}>
           {renderPoster()}
           <Text style={styles.listTitle}>Now Playing</Text>
-          <MovieList movies={data?.nowPlaying} isHorizontal={true} />
-          <Text style={styles.listTitle}>Up Coming</Text>
-          <MovieList movies={data?.upcoming} isHorizontal={true} />
+          <MovieList movies={data?.movies} isHorizontal={true} />
         </ScrollView>
       ) : (
         <View

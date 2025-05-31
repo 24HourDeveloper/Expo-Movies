@@ -1,13 +1,13 @@
 import { useQuery } from '@apollo/client'
 import { useState, useEffect } from 'react'
-import { CATEGORY_MOVIES_QUERY } from '../gql/Query'
+import { MOVIES_QUERY } from '../gql/Query'
 import { Movie } from '../components/MovieList'
 
-export default function usePagination(category: string) {
+export default function usePagination() {
   const [page, setPage] = useState<number>(1)
   const [movies, setMovies] = useState<[] | Movie[]>([])
-  const { data, loading, refetch } = useQuery(CATEGORY_MOVIES_QUERY,
-    { variables: { page, category }}
+  const { data, loading, refetch } = useQuery(MOVIES_QUERY,
+    { variables: { page }}
   )
 
   const addMoreMovies = () => {
