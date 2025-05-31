@@ -2,46 +2,52 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  ScrollView,
   ActivityIndicator,
   View,
   Image,
 } from "react-native";
-import { useQuery } from "@apollo/client";
 
 import MovieList from "./MovieList";
-import { MOVIES_QUERY } from "../gql/Query";
+import usePagination from "../hooks/usePagination";
+import MoviesContainer from "./MoviesContainer";
 
 const Trailers = () => {
-  const { data } = useQuery(MOVIES_QUERY);
+  const { movies: data, page, setPage, refetch, loading } = usePagination();
 
-  const renderPoster = () => {
-    if (data !== undefined) {
-      return (
-        <Pressable key={data.movies[0]?.id}>
-          <Image
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${
-                data.movies[Math.floor(Math.random() * 9)]?.poster_path
-              }`,
-            }}
-            resizeMode="cover"
-            style={{ width: "100%", height: 450 }}
-          />
-        </Pressable>
-      );
-    }
-    return null;
-  };
+  if (data === null || data === undefined || data.length === 0) return null;
+  // const renderPoster = () => {
+  //   if (data !== undefined) {
+  //     return (
+  //       <Pressable key={data[0]?.id}>
+  //         <Image
+  //           source={{
+  //             uri: `https://image.tmdb.org/t/p/w500${
+  //               data[Math.floor(Math.random() * 9)]?.poster_path
+  //             }`,
+  //           }}
+  //           resizeMode="cover"
+  //           style={{ width: "100%", height: 450 }}
+  //         />
+  //       </Pressable>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   return (
     <>
       {data !== undefined ? (
-        <ScrollView style={{ backgroundColor: "#1B1212" }}>
-          {renderPoster()}
-          <Text style={styles.listTitle}>Now Playing</Text>
-          <MovieList movies={data?.movies} isHorizontal={true} />
-        </ScrollView>
+        <MoviesContainer>
+          {/* {renderPoster()} */}
+          <MovieList
+            movies={data}
+            loading={loading}
+            fetchNextPage={() => {
+              setPage(page + 1);
+              refetch({ page: page + 1 });
+            }}
+          />
+        </MoviesContainer>
       ) : (
         <View
           style={{
@@ -60,13 +66,13 @@ const Trailers = () => {
 };
 export default Trailers;
 
-const styles = StyleSheet.create({
-  listTitle: {
-    width: "100%",
-    padding: 5,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#FFF",
-    textAlign: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   listTitle: {
+//     width: "100%",
+//     padding: 5,
+//     fontSize: 20,
+//     fontWeight: "bold",
+//     color: "#FFF",
+//     textAlign: "center",
+//   },
+// });

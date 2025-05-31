@@ -12,7 +12,7 @@ if (__DEV__) {
 const client = new ApolloClient({
   uri: Platform.select({
     web: 'http://localhost:8081/api/graphql',
-    android: 'http://10.0.2.2:8081/api/graphql', // Android emulator
+    //android: 'http://10.0.2.2:8081/api/graphql', // Android emulator
     default: 'http://10.0.0.3:8081/api/graphql', // iOS simulator
   }),
   cache: new InMemoryCache()

@@ -15,7 +15,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Movies",
           tabBarIcon: ({ color, focused }) => (
             <Fontisto size={28} name="film" color={focused ? "white" : color} />
           ),

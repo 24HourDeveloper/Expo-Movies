@@ -11,7 +11,7 @@ export default function AppLayout() {
           name="(tabs)"
           options={{
             headerShown: true,
-            headerTitle: "Movies",
+            headerTitle: "Social Entertainment",
             headerShadowVisible: false,
           }}
         />
