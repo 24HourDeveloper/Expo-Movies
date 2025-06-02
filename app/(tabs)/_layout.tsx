@@ -1,7 +1,12 @@
 import { Fontisto } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { Platform } from "react-native";
+import WebNav from "../../components/WebNav";
 
 export default function TabLayout() {
+  if (Platform.OS === "web") {
+    return <WebNav />;
+  }
   return (
     <Tabs
       screenOptions={{

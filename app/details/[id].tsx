@@ -8,8 +8,9 @@ import {
   Share,
   TouchableOpacity,
   Platform,
+  useWindowDimensions,
 } from "react-native";
-import { WebView } from "react-native-webview";
+import YoutubePlayer from "react-native-youtube-iframe";
 import { Fontisto } from "@expo/vector-icons";
 import { useQuery } from "@apollo/client";
 
@@ -21,9 +22,20 @@ export default function Details() {
   const { data: trailerData } = useQuery(MOVIE_TRAILER_QUERY, {
     variables: { id: id },
   });
+  const { width } = useWindowDimensions();
 
   const imgURL = process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL;
+  const originalURL = "https://image.tmdb.org/t/p/original";
   const youtubeURL = process.env.EXPO_PUBLIC_YOUTUBE_WATCH_URL;
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
 
   const share = async () => {
     if (Platform.OS === "ios") {
@@ -45,8 +57,12 @@ export default function Details() {
 
   const key =
     trailerData?.trailers.length === 0 ? "" : trailerData?.trailers[0].key;
+
+  const isWeb = Platform.OS === "web";
+  const isSmallScreen = width <= 850;
+
   return (
-    <ScrollView style={{ backgroundColor: "#505050" }}>
+    <ScrollView style={{ backgroundColor: "#1B1212" }}>
       <Stack.Screen
         options={{
           title: data?.movie.title ?? "",
@@ -54,9 +70,17 @@ export default function Details() {
       />
       <Image
         source={{
-          uri: `${imgURL}${data?.movie.poster_path}`,
+          uri: isWeb
+            ? `${originalURL}${data?.movie.backdrop_path}`
+            : `${imgURL}${data?.movie.poster_path}`,
         }}
-        style={{ width: "100%", height: 350, marginBottom: 20 }}
+        style={{
+          width: "100%",
+          height: isWeb ? 500 : 350,
+          marginBottom: 20,
+          resizeMode: "cover",
+          borderRadius: isWeb ? 8 : 0,
+        }}
       />
       <TouchableOpacity
         onPress={share}
@@ -69,38 +93,56 @@ export default function Details() {
         <Fontisto name="share" size={32} color="#ffffff" />
       </TouchableOpacity>
 
-      <View style={{ marginHorizontal: 10 }}>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            textAlign: "center",
-            color: "#fff",
+      <View style={{ 
+        flexDirection: isWeb && !isSmallScreen ? "row" : "column",
+        marginHorizontal: 10,
+        gap: 20,
+      }}>
+        <View style={{ flex: isWeb && !isSmallScreen ? 1 : undefined }}>
+          <Text
+            style={{
+              fontSize: isWeb ? (isSmallScreen ? 20 : 32) : 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              color: "#fff",
+              marginBottom: 20,
+            }}
+          >
+            {data?.movie.title}
+          </Text>
+          <Text style={{ 
+            color: "#fff", 
             marginBottom: 20,
-          }}
-        >
-          {data?.movie.title}
-        </Text>
-        <Text style={{ color: "#fff", marginBottom: 20 }}>
-          {data?.movie.overview}
-        </Text>
-        <Text style={{ color: "#fff" }}>
-          Release Date: {data?.movie.release_date}
-        </Text>
+            fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
+            lineHeight: isWeb ? (isSmallScreen ? 24 : 30) : 24,
+          }}>
+            {data?.movie.overview}
+          </Text>
+          <Text style={{ 
+            color: "#fff",
+            fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
+          }}>
+            Release Date: {data?.movie.release_date ? formatDate(data.movie.release_date) : 'N/A'}
+          </Text>
+        </View>
+        {key && (
+          <View style={{ 
+            flex: isWeb && !isSmallScreen ? 1 : undefined,
+            marginVertical: isWeb && !isSmallScreen ? 0 : 20,
+          }}>
+            <YoutubePlayer
+              height={isWeb ? (isSmallScreen ? 300 : 400) : 250}
+              videoId={key}
+              play={false}
+              initialPlayerParams={{
+                preventFullScreen: false,
+                controls: true,
+                modestbranding: true,
+              }}
+            />
+          </View>
+        )}
       </View>
-      <WebView
-        style={{
-          flex: 1,
-          marginVertical: 20,
-          height: 250,
-          marginHorizontal: 10,
-          backgroundColor: "transparent",
-        }}
-        javaScriptEnabled={true}
-        source={{
-          uri: `https://www.youtube.com/embed/${key}?rel=0&autoplay=0&showinfo=0&controls=0`,
-        }}
-      />
     </ScrollView>
   );
 }

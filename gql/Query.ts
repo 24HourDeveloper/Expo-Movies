@@ -1,14 +1,5 @@
 import { gql } from '@apollo/client';
 
-// export const MOVIES_QUERY = gql`
-//   query {
-//     nowPlaying: movies(page: 1) {
-//       id
-//       poster_path
-//     }
-//   }
-// `;
-
 export const MOVIES_QUERY = gql`
   query Movies($page: Int) {
     movies(page: $page) {
@@ -26,6 +17,7 @@ export const MOVIE_DETAILS_QUERY = gql`
       poster_path
       overview
       release_date
+      backdrop_path
     }
   }
 `

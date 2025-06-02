@@ -2,6 +2,7 @@ import { Stack } from "expo-router/stack";
 import { ApolloProvider } from "@apollo/client";
 import headerOptions from "./headerOptions";
 import client from "../graphql/apolloClient";
+import { Platform } from "react-native";
 
 export default function AppLayout() {
   return (
@@ -10,7 +11,7 @@ export default function AppLayout() {
         <Stack.Screen
           name="(tabs)"
           options={{
-            headerShown: true,
+            headerShown: Platform.OS !== "web",
             headerTitle: "Social Entertainment",
             headerShadowVisible: false,
           }}

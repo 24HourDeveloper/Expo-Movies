@@ -31,7 +31,7 @@ export function WebMovieList({
   // Calculate responsive columns
   const getResponsiveColumns = () => {
     if (cols) return cols;
-
+    console.log(width);
     // Breakpoints for different screen sizes
     if (width >= 1400) return 6; // Extra large screens
     if (width >= 1200) return 5; // Large screens
@@ -42,6 +42,8 @@ export function WebMovieList({
   };
 
   const responsiveCols = getResponsiveColumns();
+
+  if (movies?.length === 0 || movies === undefined) return null;
 
   return (
     <div
