@@ -34,6 +34,7 @@ export default function WebNav() {
               pathname === item.path && styles.activeNavItem,
             ]}
             onPress={() => router.push(item.path)}
+            key={item.path}
           >
             <Fontisto size={24} name={item.icon} color="white" />
             <Text
