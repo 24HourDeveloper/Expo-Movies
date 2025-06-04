@@ -30,10 +30,10 @@ export default function Details() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
@@ -93,11 +93,13 @@ export default function Details() {
         <Fontisto name="share" size={32} color="#ffffff" />
       </TouchableOpacity>
 
-      <View style={{ 
-        flexDirection: isWeb && !isSmallScreen ? "row" : "column",
-        marginHorizontal: 10,
-        gap: 20,
-      }}>
+      <View
+        style={{
+          flexDirection: isWeb && !isSmallScreen ? "row" : "column",
+          marginHorizontal: 10,
+          gap: 20,
+        }}
+      >
         <View style={{ flex: isWeb && !isSmallScreen ? 1 : undefined }}>
           <Text
             style={{
@@ -110,26 +112,35 @@ export default function Details() {
           >
             {data?.movie.title}
           </Text>
-          <Text style={{ 
-            color: "#fff", 
-            marginBottom: 20,
-            fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
-            lineHeight: isWeb ? (isSmallScreen ? 24 : 30) : 24,
-          }}>
+          <Text
+            style={{
+              color: "#fff",
+              marginBottom: 20,
+              fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
+              lineHeight: isWeb ? (isSmallScreen ? 24 : 30) : 24,
+            }}
+          >
             {data?.movie.overview}
           </Text>
-          <Text style={{ 
-            color: "#fff",
-            fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
-          }}>
-            Release Date: {data?.movie.release_date ? formatDate(data.movie.release_date) : 'N/A'}
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
+            }}
+          >
+            Release Date:{" "}
+            {data?.movie.release_date
+              ? formatDate(data.movie.release_date)
+              : "N/A"}
           </Text>
         </View>
         {key && (
-          <View style={{ 
-            flex: isWeb && !isSmallScreen ? 1 : undefined,
-            marginVertical: isWeb && !isSmallScreen ? 0 : 20,
-          }}>
+          <View
+            style={{
+              flex: isWeb && !isSmallScreen ? 1 : undefined,
+              marginVertical: isWeb && !isSmallScreen ? 0 : 20,
+            }}
+          >
             <YoutubePlayer
               height={isWeb ? (isSmallScreen ? 300 : 400) : 250}
               videoId={key}
