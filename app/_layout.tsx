@@ -3,6 +3,7 @@ import { ApolloProvider } from "@apollo/client";
 import headerOptions from "./headerOptions";
 import client from "../graphql/apolloClient";
 import { Platform } from "react-native";
+import "event-target-shim";
 
 export default function AppLayout() {
   return (
