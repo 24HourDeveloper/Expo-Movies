@@ -20,24 +20,24 @@ export const moviesTypeDefs = `
 
 export const moviesResolvers = {
   Query: {
-    movies: async (_,{ page = 1 }: { page: number }) => {
+    movies: async (args: any) => {
       const res = await fetch(`
-        https://api.themoviedb.org/3/discover/movie?api_key=${process.env.MOVIE_API_KEY}&include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`)
+        https://api.themoviedb.org/3/discover/movie?api_key=${process.env.MOVIE_API_KEY}&include_adult=false&include_video=false&language=en-US&page=${args.page}&sort_by=popularity.desc`)
       const data = await res.json()
       return data.results
     },
-    movie: async (_, { id }: { id: string }) => {
-      const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`)
+    movie: async (args: any) => {
+      const res = await fetch(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`)
       const data = await res.json()
       return data
     },
-    trailers: async (_, { id }: { id: string }) => {
-      const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.MOVIE_API_KEY}&language=en-US`)
+    trailers: async (args: any) => {
+      const res = await fetch(`https://api.themoviedb.org/3/movie/${args.id}/videos?api_key=${process.env.MOVIE_API_KEY}&language=en-US`)
       const data = await res.json()
       return data.results
     },
-    search: async (_, { query }: { query: string }) => {
-      const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${query}&language=en-US&page=1`)
+      search: async (args: any) => {
+      const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${args.query}&language=en-US&page=1`)
       const data = await res.json()
       return data.results
     },
