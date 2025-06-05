@@ -29,7 +29,7 @@ const getGraphqlUrl = () => {
   }
 
   // For native apps in production
-  return 'https://your-production-domain.com/api/graphql';
+  return 'https://expo-movies.expo.app/api/graphql';
 }
 
 // Initialize Apollo Client
