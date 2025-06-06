@@ -19,7 +19,7 @@ const getGraphqlUrl = () => {
   if (Constants.executionEnvironment === 'standalone') {
     const deployServer = process.env.EXPO_UNSTABLE_DEPLOY_SERVER;
     if (deployServer) {
-      return `http://${deployServer}/api/graphql`;
+      return `https://${deployServer}/api/graphql`;
     }
   }
 
