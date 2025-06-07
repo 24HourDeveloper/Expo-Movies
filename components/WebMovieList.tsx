@@ -34,10 +34,9 @@ export function WebMovieList({
     // Breakpoints for different screen sizes
     if (width >= 1400) return 6; // Extra large screens
     if (width >= 1200) return 5; // Large screens
-    if (width >= 992) return 4; // Medium screens
-    if (width >= 768) return 3; // Small screens
-    if (width >= 576) return 2; // Extra small screens
-    return 1; // Mobile screens
+    if (width >= 880) return 4; // Medium screens
+    if (width >= 600) return 3; // Small screens
+    return 2; // Extra small screens
   };
 
   const responsiveCols = getResponsiveColumns();
@@ -50,8 +49,8 @@ export function WebMovieList({
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${responsiveCols}, 1fr)`,
-        gap: "16px",
-        padding: "16px",
+        gap: width >= 700 ? "16px" : "8px",
+        //padding: width >= 620 ? "16px" : "8px",
         width: "100%",
         minHeight: "100%",
         overflow: "scroll",
