@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "com.uncodedlifestyle.social-entertainment",
+    "scheme": "com.uncodedlifestyle.social.entertainment",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -18,14 +18,17 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.uncodedlifestyle.social-entertainment"
+      "bundleIdentifier": "com.uncodedlifestyle.social.entertainment",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.uncodedlifestyle.social-entertainment"
+      "package": "com.uncodedlifestyle.social.entertainment"
     },
     "web": {
       "favicon": "./assets/favicon.png",

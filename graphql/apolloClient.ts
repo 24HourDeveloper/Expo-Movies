@@ -13,18 +13,16 @@ const getGraphqlUrl = () => {
     return 'http://localhost:8081/api/graphql';
   }
 
-  const hostname = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+  if (Platform.OS === 'web') {
+    return '/api/graphql'; // Relative path for web
+  }
 
-  const protocol = hostname === 'localhost' ? 'http' : 'https';
-  return `${protocol}://${hostname}/api/graphql`;
+  return 'https://expo-movies.expo.app/api/graphql'; // For mobile
 }
-
+console.log("getGraphqlUrl", getGraphqlUrl());
 // Initialize Apollo Client
 const client = new ApolloClient({
-  uri: Platform.select({
-    web: getGraphqlUrl(),
-    default: 'http://10.0.0.3:8081/api/graphql', // iOS simulator
-  }),
+  uri: getGraphqlUrl(),
   cache: new InMemoryCache()
 });
 

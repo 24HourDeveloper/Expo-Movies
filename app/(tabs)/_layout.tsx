@@ -2,9 +2,12 @@ import { Fontisto } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { Platform } from "react-native";
 import WebNav from "../../components/WebNav";
+import { useWindowDimensions } from "react-native";
 
 export default function TabLayout() {
-  if (Platform.OS === "web") {
+  const { width } = useWindowDimensions();
+  const isMobile = width <= 768;
+  if (Platform.OS === "web" && !isMobile) {
     return <WebNav />;
   }
   return (
