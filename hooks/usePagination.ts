@@ -6,9 +6,16 @@ import { Movie } from '../components/MovieList'
 export default function usePagination() {
   const [page, setPage] = useState<number>(1)
   const [movies, setMovies] = useState<[] | Movie[]>([])
-  const { data, loading, refetch } = useQuery(MOVIES_QUERY,
-    { variables: { page }}
-  )
+  const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
+
+  const { data, loading, refetch } = useQuery(MOVIES_QUERY, {
+    variables: {
+      page,
+      with_watch_provider: selectedProvider,
+      with_genres: selectedGenre,
+    }
+  })
 
   const addMoreMovies = () => {
     setMovies((prevMovies) => [...prevMovies, ...data.movies])
@@ -26,5 +33,25 @@ export default function usePagination() {
     }
   }, [page, loading])
 
-  return {page, setPage, movies, refetch, loading}
+  const handleFilterChange = (provider: string | null, genre: string | null) => {
+    setSelectedProvider(provider)
+    setSelectedGenre(genre)
+    setPage(1)
+    refetch({
+      page: 1,
+      with_watch_provider: provider,
+      with_genres: genre,
+    })
+  }
+
+  return {
+    page,
+    setPage,
+    movies,
+    refetch,
+    loading,
+    selectedProvider,
+    selectedGenre,
+    handleFilterChange
+  }
 }

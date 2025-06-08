@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const MOVIES_QUERY = gql`
-  query Movies($page: Int) {
-    movies(page: $page) {
+  query Movies($page: Int, $with_watch_provider: String, $with_genres: String) {
+    movies(page: $page, with_watch_provider: $with_watch_provider, with_genres: $with_genres) {
       id
       poster_path
       backdrop_path
