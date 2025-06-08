@@ -1,6 +1,7 @@
 import { buildSchema, graphql } from 'graphql';
 //import { schema } from "./schema";
 import { moviesResolvers, moviesTypeDefs } from './schema/movies';
+import { tvsTypeDefs, tvsResolvers } from './schema/tvs';
 
 const graphiqlHTML = `
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ const graphiqlHTML = `
 </html>
 `;
 
-const schema = buildSchema(moviesTypeDefs);
+const schema = buildSchema(`${moviesTypeDefs} ${tvsTypeDefs}`);
 
 async function handleGraphQLRequest(req: Request) {
   try {
@@ -31,7 +32,10 @@ async function handleGraphQLRequest(req: Request) {
     const result = await graphql({
       schema,
       source: query,
-      rootValue: moviesResolvers.Query,
+      rootValue: {
+        ...moviesResolvers.Query,
+        ...tvsResolvers.Query,
+      },
       variableValues: variables,
     });
 
@@ -68,7 +72,10 @@ export const GET = async (req: Request) => {
     const result = await graphql({
       schema,
       source: query,
-      rootValue: moviesResolvers.Query,
+      rootValue: {
+        ...moviesResolvers.Query,
+        ...tvsResolvers.Query,
+      },
       variableValues: variables ? JSON.parse(variables) : undefined,
     });
 

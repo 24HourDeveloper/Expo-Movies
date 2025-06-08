@@ -38,3 +38,13 @@ export const SEARCH_MOVIE_QUERY = gql`
     }
   }
 `
+
+export const TVS_QUERY = gql`
+  query TVS($page: Int) {
+    tvs(page: $page) {
+      id
+      poster_path
+      backdrop_path
+    }
+  }
+`
