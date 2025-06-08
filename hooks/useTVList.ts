@@ -3,18 +3,12 @@ import { TVS_QUERY } from '../gql/Query';
 import { useQuery } from '@apollo/client';
 
 interface TVShow {
-  id: number;
+  id: string;
   name: string;
   poster_path: string;
   overview: string;
   vote_average: number;
-}
-
-interface TVListResponse {
-  page: number;
-  results: TVShow[];
-  total_pages: number;
-  total_results: number;
+  season_number: number;
 }
 
 export const useTVList = () => {
@@ -45,7 +39,9 @@ export const useTVList = () => {
 
   return {
     shows,
+    page,
     loading,
     refetch,
+    setPage,
   };
 }; 

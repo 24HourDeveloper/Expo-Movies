@@ -59,6 +59,43 @@ export const TV_DETAILS_QUERY = gql`
       backdrop_path
       first_air_date
       vote_average
+      seasons {
+        id
+        name
+        episode_count
+        season_number
+        poster_path
+      }
+    }
+  }
+`
+export const TV_TRAILER_QUERY = gql`
+  query TvTrailers($id: String!) {
+    tvTrailers(id: $id) {
+      key
+    }
+  }
+`
+
+export const SEASON_DETAILS_QUERY = gql`
+  query Season($id: String!, $season_number: Int!) {
+    season(id: $id, season_number: $season_number) {
+      id
+      name
+      overview
+      episode_count
+      poster_path
+      season_number
+      air_date
+      episodes {
+        id
+        name
+        overview
+        still_path
+        episode_number
+        air_date
+        vote_average
+      }
     }
   }
 `

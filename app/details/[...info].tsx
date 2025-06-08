@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Platform,
   useWindowDimensions,
+  FlatList,
 } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { Fontisto } from "@expo/vector-icons";
@@ -18,7 +19,9 @@ import {
   MOVIE_DETAILS_QUERY,
   MOVIE_TRAILER_QUERY,
   TV_DETAILS_QUERY,
+  TV_TRAILER_QUERY,
 } from "../../gql/Query";
+import TvItem from "../../components/TvItem";
 
 interface MediaDetails {
   id: string;
@@ -30,6 +33,13 @@ interface MediaDetails {
   release_date?: string;
   first_air_date?: string;
   vote_average: number;
+  seasons: {
+    id: string;
+    name: string;
+    episode_count: number;
+    season_number: number;
+    poster_path: string;
+  }[];
 }
 
 export default function Details() {
@@ -41,9 +51,12 @@ export default function Details() {
     variables: { id },
   });
 
-  const { data: trailerData } = useQuery(MOVIE_TRAILER_QUERY, {
-    variables: { id },
-  });
+  const { data: trailerData } = useQuery(
+    isTV ? TV_TRAILER_QUERY : MOVIE_TRAILER_QUERY,
+    {
+      variables: { id },
+    }
+  );
 
   const { width } = useWindowDimensions();
   const imgURL = process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL;
@@ -83,7 +96,9 @@ export default function Details() {
     );
   };
 
-  const key = trailerData?.trailers?.[0]?.key || "";
+  const key = isTV
+    ? trailerData?.tvTrailers?.[0]?.key
+    : trailerData?.trailers?.[0]?.key || "";
   const isWeb = Platform.OS === "web";
   const isSmallScreen = width <= 850;
 
@@ -131,17 +146,6 @@ export default function Details() {
         <View style={{ flex: isWeb && !isSmallScreen ? 1 : undefined }}>
           <Text
             style={{
-              fontSize: isWeb ? (isSmallScreen ? 20 : 32) : 20,
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#fff",
-              marginBottom: 20,
-            }}
-          >
-            {title}
-          </Text>
-          <Text
-            style={{
               color: "#fff",
               marginBottom: 20,
               fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
@@ -159,6 +163,32 @@ export default function Details() {
             {isTV ? "First Air Date" : "Release Date"}:{" "}
             {releaseDate ? formatDate(releaseDate) : "N/A"}
           </Text>
+          {media?.seasons && (
+            <View>
+              <Text
+                style={{
+                  color: "#fff",
+                  marginVertical: 12,
+                  fontSize: 24,
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {media?.seasons?.length} Seasons
+              </Text>
+              <FlatList
+                data={media?.seasons}
+                renderItem={({ item }) => (
+                  <TvItem
+                    item={{ ...item, showId: media.id }}
+                    type={"season"}
+                  />
+                )}
+                keyExtractor={(item) => item.id.toString()}
+                horizontal={true}
+              />
+            </View>
+          )}
         </View>
         {key && (
           <View
