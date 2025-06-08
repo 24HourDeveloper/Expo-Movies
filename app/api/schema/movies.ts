@@ -11,7 +11,7 @@ export const moviesTypeDefs = `
     key: String
   }
   type Query {
-    movies(page: Int): [Movie]
+    movies(page: Int, with_watch_provider: String, with_genres: String): [Movie]
     movie(id: String): Movie
     trailers(id: String): [Trailer]
     search(query: String): [Movie]
@@ -21,10 +21,19 @@ export const moviesTypeDefs = `
 export const moviesResolvers = {
   Query: {
     movies: async (args: any) => {
-      const res = await fetch(`
-        https://api.themoviedb.org/3/discover/movie?api_key=${process.env.MOVIE_API_KEY}&include_adult=false&include_video=false&language=en-US&page=${args.page}&sort_by=popularity.desc`)
-      const data = await res.json()
-      return data.results
+      const { page = 1, with_watch_provider, with_genres } = args;
+      let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.MOVIE_API_KEY}&include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
+      
+      if (with_watch_provider) {
+        url += `&with_watch_providers=${with_watch_provider}`;
+      }
+      if (with_genres) {
+        url += `&with_genres=${with_genres}`;
+      }
+      
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.results;
     },
     movie: async (args: any) => {
       const res = await fetch(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`)

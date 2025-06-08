@@ -1,12 +1,20 @@
-import React from 'react';
+import React from "react";
 import { ActivityIndicator, View } from "react-native";
 
 import MovieList from "./MovieList";
 import usePagination from "../hooks/usePagination";
 import MoviesContainer from "./MoviesContainer";
+import FilterButton from "./FilterButton";
 
 const Trailers = () => {
-  const { movies: data, page, setPage, refetch, loading } = usePagination();
+  const {
+    movies: data,
+    page,
+    setPage,
+    refetch,
+    loading,
+    handleFilterChange,
+  } = usePagination();
 
   if (data === null || data === undefined || data.length === 0) return null;
 
@@ -22,6 +30,7 @@ const Trailers = () => {
               refetch({ page: page + 1 });
             }}
           />
+          <FilterButton onFilterChange={handleFilterChange} />
         </MoviesContainer>
       ) : (
         <View
