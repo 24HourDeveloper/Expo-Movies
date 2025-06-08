@@ -6,9 +6,10 @@ import {
   StyleSheet,
   ActivityIndicator,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { useTVList } from "../hooks/useTVList";
-import { IMAGE_BASE_URL } from "../constants";
+import { Link } from "expo-router";
 
 const { width } = Dimensions.get("window");
 const numColumns = 2;
@@ -24,20 +25,26 @@ interface TVShow {
 export default function TVList() {
   const { shows, loading, refetch } = useTVList();
 
-  const renderItem = ({ item }: { item: TVShow }) => (
-    <View style={styles.tile}>
-      <Image
-        source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
-        style={styles.poster}
-        resizeMode="cover"
-      />
-    </View>
-  );
+  const renderItem = ({ item }: { item: TVShow }) => {
+    return (
+      <Link href={`/details/${item.id}/tv`} asChild>
+        <TouchableOpacity style={styles.tile}>
+          <Image
+            source={{
+              uri: `${process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL}${item.poster_path}`,
+            }}
+            style={styles.poster}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      </Link>
+    );
+  };
 
   return (
     <FlatList
       data={shows}
-      renderItem={renderItem}
+      renderItem={({ item }) => renderItem({ item })}
       keyExtractor={(item) => item.id.toString()}
       numColumns={numColumns}
       onEndReached={refetch}

@@ -48,3 +48,17 @@ export const TVS_QUERY = gql`
     }
   }
 `
+
+export const TV_DETAILS_QUERY = gql`
+  query TV($id: String!) {
+    tv(id: $id) {
+      id
+      name
+      overview
+      poster_path
+      backdrop_path
+      first_air_date
+      vote_average
+    }
+  }
+`

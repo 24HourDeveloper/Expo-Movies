@@ -14,19 +14,45 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import { Fontisto } from "@expo/vector-icons";
 import { useQuery } from "@apollo/client";
 
-import { MOVIE_DETAILS_QUERY, MOVIE_TRAILER_QUERY } from "../../gql/Query";
+import {
+  MOVIE_DETAILS_QUERY,
+  MOVIE_TRAILER_QUERY,
+  TV_DETAILS_QUERY,
+} from "../../gql/Query";
+
+interface MediaDetails {
+  id: string;
+  title?: string;
+  name?: string;
+  overview: string;
+  poster_path: string;
+  backdrop_path: string;
+  release_date?: string;
+  first_air_date?: string;
+  vote_average: number;
+}
 
 export default function Details() {
-  const { id } = useLocalSearchParams();
-  const { data } = useQuery(MOVIE_DETAILS_QUERY, { variables: { id: id } });
-  const { data: trailerData } = useQuery(MOVIE_TRAILER_QUERY, {
-    variables: { id: id },
-  });
-  const { width } = useWindowDimensions();
+  const { info } = useLocalSearchParams();
+  const [id, type] = info;
+  const isTV = type === "tv";
 
+  const { data } = useQuery(isTV ? TV_DETAILS_QUERY : MOVIE_DETAILS_QUERY, {
+    variables: { id },
+  });
+
+  const { data: trailerData } = useQuery(MOVIE_TRAILER_QUERY, {
+    variables: { id },
+  });
+
+  const { width } = useWindowDimensions();
   const imgURL = process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL;
   const originalURL = "https://image.tmdb.org/t/p/original";
   const youtubeURL = process.env.EXPO_PUBLIC_YOUTUBE_WATCH_URL;
+
+  const media: MediaDetails = isTV ? data?.tv : data?.movie;
+  const title = isTV ? media?.name : media?.title;
+  const releaseDate = isTV ? media?.first_air_date : media?.release_date;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -38,41 +64,43 @@ export default function Details() {
   };
 
   const share = async () => {
+    if (!trailerData?.trailers?.[0]?.key) return;
+
     if (Platform.OS === "ios") {
       await Share.share(
         {
-          url: `${youtubeURL}${trailerData?.trailers[0].key}`,
+          url: `${youtubeURL}${trailerData.trailers[0].key}`,
         },
-        { subject: `${data?.movie.title} Trailer` }
+        { subject: `${title} Trailer` }
       );
     }
     await Share.share(
       {
-        title: `${data?.movie.title} Trailer`,
-        message: `${youtubeURL}${trailerData?.trailers[0].key}`,
+        title: `${title} Trailer`,
+        message: `${youtubeURL}${trailerData.trailers[0].key}`,
       },
       { dialogTitle: "Share Trailers With Friends" }
     );
   };
 
-  const key =
-    trailerData?.trailers.length === 0 ? "" : trailerData?.trailers[0].key;
-
+  const key = trailerData?.trailers?.[0]?.key || "";
   const isWeb = Platform.OS === "web";
   const isSmallScreen = width <= 850;
+
+  if (!media) return null;
 
   return (
     <ScrollView style={{ backgroundColor: "#1B1212" }}>
       <Stack.Screen
         options={{
-          title: data?.movie.title ?? "",
+          title: title ?? "",
         }}
       />
       <Image
         source={{
           uri: isWeb
-            ? `${originalURL}${data?.movie.backdrop_path}`
-            : `${imgURL}${data?.movie.poster_path}`,
+            ? `${originalURL}${media.backdrop_path}`
+            : `${imgURL}${media.poster_path}`,
         }}
         style={{
           width: "100%",
@@ -110,7 +138,7 @@ export default function Details() {
               marginBottom: 20,
             }}
           >
-            {data?.movie.title}
+            {title}
           </Text>
           <Text
             style={{
@@ -120,7 +148,7 @@ export default function Details() {
               lineHeight: isWeb ? (isSmallScreen ? 24 : 30) : 24,
             }}
           >
-            {data?.movie.overview}
+            {media.overview}
           </Text>
           <Text
             style={{
@@ -128,10 +156,8 @@ export default function Details() {
               fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
             }}
           >
-            Release Date:{" "}
-            {data?.movie.release_date
-              ? formatDate(data.movie.release_date)
-              : "N/A"}
+            {isTV ? "First Air Date" : "Release Date"}:{" "}
+            {releaseDate ? formatDate(releaseDate) : "N/A"}
           </Text>
         </View>
         {key && (
