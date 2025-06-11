@@ -1,18 +1,6 @@
 import React from "react";
-import { useLocalSearchParams, Stack } from "expo-router";
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  Share,
-  TouchableOpacity,
-  Platform,
-  useWindowDimensions,
-  FlatList,
-} from "react-native";
-import YoutubePlayer from "react-native-youtube-iframe";
-import { Fontisto } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
+import { Share, Platform, useWindowDimensions } from "react-native";
 import { useQuery } from "@apollo/client";
 
 import {
@@ -22,6 +10,12 @@ import {
   TV_TRAILER_QUERY,
 } from "../../gql/Query";
 import TvItem from "../../components/TvItem";
+import MediaHeader from "../../components/MediaHeader";
+import MediaContent from "../../components/MediaContent";
+import MediaVideoPlayer from "../../components/MediaVideoPlayer";
+import DetailList from "../../components/DetailList";
+import MediaContentContainer from "../../components/MediaContentContainer";
+import MediaContainer from "../../components/MediaContainer";
 
 interface MediaDetails {
   id: string;
@@ -47,11 +41,14 @@ export default function Details() {
   const [id, type] = info;
   const isTV = type === "tv";
 
-  const { data } = useQuery(isTV ? TV_DETAILS_QUERY : MOVIE_DETAILS_QUERY, {
-    variables: { id },
-  });
+  const { data, loading: detailsLoading } = useQuery(
+    isTV ? TV_DETAILS_QUERY : MOVIE_DETAILS_QUERY,
+    {
+      variables: { id },
+    }
+  );
 
-  const { data: trailerData } = useQuery(
+  const { data: trailerData, loading: trailerLoading } = useQuery(
     isTV ? TV_TRAILER_QUERY : MOVIE_TRAILER_QUERY,
     {
       variables: { id },
@@ -59,22 +56,13 @@ export default function Details() {
   );
 
   const { width } = useWindowDimensions();
-  const imgURL = process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL;
-  const originalURL = "https://image.tmdb.org/t/p/original";
+  const isWeb = Platform.OS === "web";
+  const isSmallScreen = width <= 850;
   const youtubeURL = process.env.EXPO_PUBLIC_YOUTUBE_WATCH_URL;
 
   const media: MediaDetails = isTV ? data?.tv : data?.movie;
   const title = isTV ? media?.name : media?.title;
   const releaseDate = isTV ? media?.first_air_date : media?.release_date;
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
 
   const share = async () => {
     if (!trailerData?.trailers?.[0]?.key) return;
@@ -99,117 +87,44 @@ export default function Details() {
   const key = isTV
     ? trailerData?.tvTrailers?.[0]?.key
     : trailerData?.trailers?.[0]?.key || "";
-  const isWeb = Platform.OS === "web";
-  const isSmallScreen = width <= 850;
 
   if (!media) return null;
 
   return (
-    <ScrollView style={{ backgroundColor: "#1B1212" }}>
-      <Stack.Screen
-        options={{
-          title: title ?? "",
-        }}
+    <MediaContainer
+      loading={detailsLoading || trailerLoading}
+      title={title ?? ""}
+      backgroundColor="#1B1212"
+    >
+      <MediaHeader
+        imagePath={isWeb ? media.backdrop_path : media.poster_path}
+        onShare={share}
+        isPoster={!isWeb}
       />
-      <Image
-        source={{
-          uri: isWeb
-            ? `${originalURL}${media.backdrop_path}`
-            : `${imgURL}${media.poster_path}`,
-        }}
-        style={{
-          width: "100%",
-          height: isWeb ? 500 : 350,
-          marginBottom: 20,
-          resizeMode: "cover",
-          borderRadius: isWeb ? 8 : 0,
-        }}
-      />
-      <TouchableOpacity
-        onPress={share}
-        style={{
-          alignItems: "flex-end",
-          marginHorizontal: 10,
-          marginBottom: 20,
-        }}
-      >
-        <Fontisto name="share" size={32} color="#ffffff" />
-      </TouchableOpacity>
 
-      <View
-        style={{
-          flexDirection: isWeb && !isSmallScreen ? "row" : "column",
-          marginHorizontal: 10,
-          gap: 20,
-        }}
+      <MediaContentContainer
+        videoContent={key && <MediaVideoPlayer videoId={key} />}
+        style={{ marginTop: 10 }}
+        contentStyle={{ flex: isWeb && !isSmallScreen ? 1 : undefined }}
+        videoStyle={{ flex: isWeb && !isSmallScreen ? 1 : undefined }}
       >
-        <View style={{ flex: isWeb && !isSmallScreen ? 1 : undefined }}>
-          <Text
-            style={{
-              color: "#fff",
-              marginBottom: 20,
-              fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
-              lineHeight: isWeb ? (isSmallScreen ? 24 : 30) : 24,
-            }}
-          >
-            {media.overview}
-          </Text>
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: isWeb ? (isSmallScreen ? 16 : 20) : 16,
-            }}
-          >
-            {isTV ? "First Air Date" : "Release Date"}:{" "}
-            {releaseDate ? formatDate(releaseDate) : "N/A"}
-          </Text>
+        <MediaContent
+          overview={media.overview}
+          releaseDate={releaseDate}
+          releaseDateLabel={isTV ? "First Air Date" : "Release Date"}
+        >
           {media?.seasons && (
-            <View>
-              <Text
-                style={{
-                  color: "#fff",
-                  marginVertical: 12,
-                  fontSize: 24,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {media?.seasons?.length} Seasons
-              </Text>
-              <FlatList
-                data={media?.seasons}
-                renderItem={({ item }) => (
-                  <TvItem
-                    item={{ ...item, showId: media.id }}
-                    type={"season"}
-                  />
-                )}
-                keyExtractor={(item) => item.id.toString()}
-                horizontal={true}
-              />
-            </View>
-          )}
-        </View>
-        {key && (
-          <View
-            style={{
-              flex: isWeb && !isSmallScreen ? 1 : undefined,
-              marginVertical: isWeb && !isSmallScreen ? 0 : 20,
-            }}
-          >
-            <YoutubePlayer
-              height={isWeb ? (isSmallScreen ? 300 : 400) : 250}
-              videoId={key}
-              play={false}
-              initialPlayerParams={{
-                preventFullScreen: false,
-                controls: true,
-                modestbranding: true,
-              }}
+            <DetailList
+              title={`${media.seasons.length} Seasons`}
+              data={media.seasons}
+              renderItem={({ item }) => (
+                <TvItem item={{ ...item, showId: media.id }} type={"season"} />
+              )}
+              keyExtractor={(item) => item.id.toString()}
             />
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </MediaContent>
+      </MediaContentContainer>
+    </MediaContainer>
   );
 }
