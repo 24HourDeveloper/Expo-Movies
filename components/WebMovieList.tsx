@@ -8,15 +8,25 @@ export type Movie = {
   poster_path: string;
 };
 
+type TV = {
+  id: string;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+  season_number: number;
+  showId?: string;
+  still_path?: string;
+};
+
 type WebMovieListProps = {
-  movies: Movie[];
+  data: Movie[] | TV[];
   loading?: boolean;
   fetchNextPage?: () => void;
   cols?: number;
 };
 
 export function WebMovieList({
-  movies,
+  data,
   loading,
   fetchNextPage,
   cols,
@@ -41,7 +51,7 @@ export function WebMovieList({
 
   const responsiveCols = getResponsiveColumns();
 
-  if (movies?.length === 0 || movies === undefined) return null;
+  if (data?.length === 0 || data === undefined) return null;
 
   return (
     <div
@@ -55,13 +65,17 @@ export function WebMovieList({
         overflow: "scroll",
       }}
     >
-      {movies.map((item) => (
-        <Item
-          key={item.id.toString()}
-          path={`/details/${item.id}`}
-          poster={item.poster_path}
-        />
-      ))}
+      {data.map((item) => {
+        const path =
+          "title" in item ? `/details/${item.id}` : `/details/${item.id}/tv`;
+        return (
+          <Item
+            key={item.id.toString()}
+            path={path}
+            poster={"still_path" in item ? item.still_path : item.poster_path}
+          />
+        );
+      })}
       <div
         ref={sentinelRef}
         style={{

@@ -30,24 +30,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="now-playing"
-        options={{
-          title: "Now Playing",
-          tabBarIcon: ({ color, focused }) => (
-            <Fontisto size={28} name="film" color={focused ? "white" : color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="up-coming"
-        options={{
-          title: "Up Coming",
-          tabBarIcon: ({ color, focused }) => (
-            <Fontisto size={28} name="film" color={focused ? "white" : color} />
-          ),
-        }}
-      /> */}
       <Tabs.Screen
         name="tv"
         options={{

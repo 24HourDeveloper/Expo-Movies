@@ -7,19 +7,27 @@ import { useRouter, usePathname } from "expo-router";
 export default function WebNav() {
   const router = useRouter();
   const pathname = usePathname();
-  const navConfig: { label: string; icon: "film" | "search"; path: string }[] =
-    [
-      {
-        label: "Movies",
-        icon: "film",
-        path: "/",
-      },
-      {
-        label: "Search",
-        icon: "search",
-        path: "/search",
-      },
-    ];
+  const navConfig: {
+    label: string;
+    icon: "film" | "search" | "tv";
+    path: string;
+  }[] = [
+    {
+      label: "Movies",
+      icon: "film",
+      path: "/",
+    },
+    {
+      label: "TV Shows",
+      icon: "tv",
+      path: "/tv",
+    },
+    {
+      label: "Search",
+      icon: "search",
+      path: "/search",
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -51,6 +59,7 @@ export default function WebNav() {
       <View style={styles.content}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
+          <Stack.Screen name="tv" />
           <Stack.Screen name="search" />
         </Stack>
       </View>

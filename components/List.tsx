@@ -43,9 +43,10 @@ function List({
   fetchNextPage,
 }: ListTypes) {
   if (Platform.OS === "web") {
+    console.log("IN WEB LIST");
     return (
       <WebMovieList
-        movies={items as MovieItem[]}
+        data={items as MovieItem[] | TVItem[]}
         loading={loading}
         fetchNextPage={fetchNextPage}
         cols={cols}
