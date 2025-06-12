@@ -10,12 +10,15 @@ import {
   TV_TRAILER_QUERY,
 } from "../../gql/Query";
 import TvItem from "../../components/TvItem";
-import MediaHeader from "../../components/MediaHeader";
-import MediaContent from "../../components/MediaContent";
-import MediaVideoPlayer from "../../components/MediaVideoPlayer";
+import {
+  MediaContainer,
+  MediaHeader,
+  MediaContent,
+  MediaVideoPlayer,
+  MediaContentContainer,
+} from "../../components/media";
 import DetailList from "../../components/DetailList";
-import MediaContentContainer from "../../components/MediaContentContainer";
-import MediaContainer from "../../components/MediaContainer";
+import Item from "../../components/Item";
 
 interface MediaDetails {
   id: string;
@@ -118,7 +121,7 @@ export default function Details() {
               title={`${media.seasons.length} Seasons`}
               data={media.seasons}
               renderItem={({ item }) => (
-                <TvItem item={{ ...item, showId: media.id }} type={"season"} />
+                <Item path={`/details/season/${media.id}/${item.season_number}`} poster={item.poster_path} />
               )}
               keyExtractor={(item) => item.id.toString()}
             />

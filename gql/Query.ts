@@ -1,12 +1,23 @@
 import { gql } from '@apollo/client';
 
-export const MOVIES_QUERY = gql`
-  query Movies($page: Int, $with_watch_provider: String, $with_genres: String) {
-    movies(page: $page, with_watch_provider: $with_watch_provider, with_genres: $with_genres) {
-      id
-      poster_path
-      backdrop_path
+export const LIST_QUERY = gql`
+  query List($page: Int, $with_watch_provider: String, $with_genres: String, $type: String) {
+    list(page: $page, with_watch_provider: $with_watch_provider, with_genres: $with_genres, type: $type) {
+      ...MovieFields
+      ...TVFields
     }
+  }
+  fragment MovieFields on Movie {
+    id
+    title
+    poster_path
+    backdrop_path
+  }
+  fragment TVFields on TV { 
+    id
+    name
+    poster_path
+    backdrop_path
   }
 `;
 
@@ -35,16 +46,6 @@ export const SEARCH_MOVIE_QUERY = gql`
     search(query: $query) {
       id
       poster_path
-    }
-  }
-`
-
-export const TVS_QUERY = gql`
-  query TVS($page: Int) {
-    tvs(page: $page) {
-      id
-      poster_path
-      backdrop_path
     }
   }
 `

@@ -19,24 +19,11 @@ export const tvsTypeDefs = `
     episodes: [Episode]
     air_date: String
   }
-
-  type TV {
-    id: String
-    name: String
-    poster_path: String
-    overview: String
-    first_air_date: String
-    backdrop_path: String
-    vote_average: Float
-    seasons: [Season]
-  }
-
   type TvTrailer {
     key: String
   }
 
   extend type Query {
-    tvs(page: Int): [TV]
     tv(id: String): TV
     tvTrailers(id: String): [TvTrailer]
     season(id: String!, season_number: Int!): Season
@@ -45,12 +32,7 @@ export const tvsTypeDefs = `
 
 export const tvsResolvers = {
   Query: {
-    tvs: async (args: any) => {
-      const response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${process.env.MOVIE_API_KEY}&page=${args.page}&sort_by=popularity.desc`);
-      const data = await response.json();
-      return data.results;
-    },
-    tv: async (args: any) => {
+    tv: async (_, args: any) => {
       try {
         const response = await fetch(`https://api.themoviedb.org/3/tv/${args.id}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`);
         if (!response.ok) {
@@ -72,13 +54,12 @@ export const tvsResolvers = {
         throw error;
       }
     },
-    tvTrailers: async (args: any) => {
+    tvTrailers: async (_, args: any) => {
       const response = await fetch(`https://api.themoviedb.org/3/tv/${args.id}/videos?api_key=${process.env.MOVIE_API_KEY}&language=en-US`);
       const data = await response.json();
       return data.results;
     },
-    season: async (args: any) => {
-      console.log("args season==============", args);
+    season: async (_, args: any) => {
       try {
         const response = await fetch(
           `https://api.themoviedb.org/3/tv/${args.id}/season/${args.season_number}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`

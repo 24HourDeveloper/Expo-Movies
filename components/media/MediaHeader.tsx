@@ -1,5 +1,11 @@
 import React from "react";
-import { Image, TouchableOpacity, Platform, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+  Dimensions,
+} from "react-native";
 import { Fontisto } from "@expo/vector-icons";
 
 interface MediaHeaderProps {

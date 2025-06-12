@@ -1,29 +1,24 @@
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
 
-import MovieList from "./MovieList";
+import List from "./List";
 import usePagination from "../hooks/usePagination";
-import MoviesContainer from "./MoviesContainer";
+import Container from "./Container";
 import FilterButton from "./FilterButton";
+import { DocumentNode } from "@apollo/client";
 
-const Trailers = () => {
-  const {
-    movies: data,
-    page,
-    setPage,
-    refetch,
-    loading,
-    handleFilterChange,
-  } = usePagination();
+const MainList = ({ query, type }: { query: DocumentNode; type: string }) => {
+  const { items, page, setPage, refetch, loading, handleFilterChange } =
+    usePagination(query, type);
 
-  if (data === null || data === undefined || data.length === 0) return null;
+  if (items === null || items === undefined || items.length === 0) return null;
 
   return (
     <>
-      {data !== undefined ? (
-        <MoviesContainer>
-          <MovieList
-            movies={data}
+      {items !== undefined ? (
+        <Container>
+          <List
+            items={items}
             loading={loading}
             fetchNextPage={() => {
               setPage(page + 1);
@@ -31,7 +26,7 @@ const Trailers = () => {
             }}
           />
           <FilterButton onFilterChange={handleFilterChange} />
-        </MoviesContainer>
+        </Container>
       ) : (
         <View
           style={{
@@ -49,4 +44,4 @@ const Trailers = () => {
   );
 };
 
-export default Trailers;
+export default MainList;

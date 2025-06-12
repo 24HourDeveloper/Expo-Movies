@@ -3,12 +3,14 @@ import { Platform, Dimensions } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@apollo/client";
 import { SEASON_DETAILS_QUERY } from "../../../gql/Query";
-import TvItem from "../../../components/TvItem";
-import MediaHeader from "../../../components/MediaHeader";
-import MediaContent from "../../../components/MediaContent";
+import {
+  MediaContainer,
+  MediaHeader,
+  MediaContent,
+  MediaContentContainer,
+} from "../../../components/media";
 import DetailList from "../../../components/DetailList";
-import MediaContentContainer from "../../../components/MediaContentContainer";
-import MediaContainer from "../../../components/MediaContainer";
+import Item from "../../../components/Item";
 
 export default function Season() {
   const { season_info } = useLocalSearchParams();
@@ -44,7 +46,7 @@ export default function Season() {
             title={`${data.season.episodes.length} Episodes`}
             data={data.season.episodes}
             renderItem={({ item }) => (
-              <TvItem item={{ ...item, showId: item.id }} type={"season"} />
+              <Item path={`/details/episode/${data.id}/${data.season.season_number}/${item.episode_number}`} poster={item.still_path} />
             )}
             keyExtractor={(item) => item.id.toString()}
           />

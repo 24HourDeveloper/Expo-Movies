@@ -1,14 +1,14 @@
 import { View, TextInput } from "react-native";
 import { useQuery } from "@apollo/client";
 
-import MovieList from "../../components/MovieList";
+import List from "../../components/List";
 import { SEARCH_MOVIE_QUERY } from "../../gql/Query";
 import useDebounceSearch from "../../hooks/useDebounceSearch";
 
 const SearchMovies = () => {
   const [query, setQuery, debouncedSearch] = useDebounceSearch();
 
-  const { data } = useQuery(SEARCH_MOVIE_QUERY, {
+  const { data, loading } = useQuery(SEARCH_MOVIE_QUERY, {
     variables: { query: debouncedSearch },
     skip: debouncedSearch === "",
   });
@@ -33,7 +33,7 @@ const SearchMovies = () => {
         onChangeText={searchQuery}
       />
       <View style={{ flex: 1, paddingHorizontal: 25 }}>
-        <MovieList movies={data?.search} />
+        <List items={data?.search} loading={loading} />
       </View>
     </View>
   );

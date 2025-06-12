@@ -1,10 +1,11 @@
 import { StyleSheet, View } from "react-native";
-import Trailers from "../../components/Trailer";
+import MainList from "../../components/MainList";
+import { LIST_QUERY } from "../../gql/Query";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Trailers />
+      <MainList query={LIST_QUERY} type="movie" />
     </View>
   );
 }

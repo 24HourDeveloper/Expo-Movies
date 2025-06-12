@@ -2,23 +2,17 @@ import { Link } from "expo-router";
 import React from "react";
 import { Dimensions, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-interface TVShow {
-  id: string;
-  name: string;
-  poster_path: string;
-  still_path?: string;
-  season_number: number;
-  showId?: string;
-}
-
-export default function TvItem({ item, type }: { item: TVShow; type: string }) {
+export default function Item({
+  path,
+  poster,
+}: {
+  path: string;
+  poster: string | undefined;
+}) {
   const imgURL = process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL;
   let imageWidth = Dimensions.get("screen").width > 400 ? 185 : 150;
   let imageHeight = Dimensions.get("screen").width > 400 ? 250 : 200;
-  const path =
-    type === "season"
-      ? `/details/season/${item.showId}/${item.season_number}`
-      : `/details/${item.id}/tv`;
+
   return (
     <Link href={path} asChild>
       <TouchableOpacity
@@ -26,7 +20,7 @@ export default function TvItem({ item, type }: { item: TVShow; type: string }) {
       >
         <Image
           source={{
-            uri: `${imgURL}${item.poster_path || item.still_path}`,
+            uri: `${imgURL}${poster}`,
           }}
           style={{ width: imageWidth, height: imageHeight, borderRadius: 8 }}
           resizeMode="cover"

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Pressable, Dimensions } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { Link } from "expo-router";
 
 type MovieItemTypes = {
@@ -12,7 +12,7 @@ const MovieItem = ({ itemID, itemImage }: MovieItemTypes) => {
   let imageHeight = Dimensions.get("screen").width > 400 ? 250 : 200;
   return (
     <Link href={`/details/${itemID}`} asChild>
-      <Pressable
+      <TouchableOpacity
         style={{ ...styles.listContainer, height: imageHeight }}
         key={itemID}
       >
@@ -22,7 +22,7 @@ const MovieItem = ({ itemID, itemImage }: MovieItemTypes) => {
           }}
           style={{ width: imageWidth, height: imageHeight, borderRadius: 8 }}
         />
-      </Pressable>
+      </TouchableOpacity>
     </Link>
   );
 };

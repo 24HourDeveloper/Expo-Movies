@@ -7,32 +7,46 @@ import {
 } from "react-native";
 import MovieItem from "./MovieItem";
 import { WebMovieList } from "./WebMovieList";
+import Item from "./Item";
 
-export type Movie = {
+type MovieItem = {
   id: number;
+  title: string;
   poster_path: string;
   backdrop_path: string;
 };
 
-type MovieListTypes = {
+type TVItem = {
+  id: string;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+  season_number: number;
+  showId?: string;
+  still_path?: string;
+};
+
+export type EntitiesItem = MovieItem | TVItem;
+
+type ListTypes = {
   cols?: number;
   isHorizontal?: boolean;
-  movies: Movie[];
+  items: EntitiesItem[];
   loading?: boolean;
   fetchNextPage?: () => void;
 };
 
-function MovieList({
+function List({
   cols,
   isHorizontal = false,
-  movies,
+  items,
   loading,
   fetchNextPage,
-}: MovieListTypes) {
+}: ListTypes) {
   if (Platform.OS === "web") {
     return (
       <WebMovieList
-        movies={movies}
+        movies={items as MovieItem[]}
         loading={loading}
         fetchNextPage={fetchNextPage}
         cols={cols}
@@ -43,10 +57,17 @@ function MovieList({
   return (
     <View style={styles.container}>
       <FlatList
-        data={movies}
-        renderItem={({ item }) => (
-          <MovieItem itemID={item.id} itemImage={item.poster_path} />
-        )}
+        data={items}
+        renderItem={({ item }) => {
+          const path =
+            "title" in item ? `/details/${item.id}` : `/details/${item.id}/tv`;
+          return (
+            <Item
+              path={path}
+              poster={"still_path" in item ? item.still_path : item.poster_path}
+            />
+          );
+        }}
         keyExtractor={(item) => item.id.toString()}
         numColumns={cols || 2}
         horizontal={isHorizontal}
@@ -88,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MovieList;
+export default List;
