@@ -25,7 +25,7 @@ export const listTypeDefs = `
 
 export const listResolvers = {
   Query: {
-    list: async (_, args: any) => {
+    list: async (_: any, args: any) => {
       try {
         const { page = 1, with_watch_provider, with_genres, type } = args;
 

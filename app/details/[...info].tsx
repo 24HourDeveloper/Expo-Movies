@@ -53,7 +53,7 @@ export default function Details() {
   const { data: trailerData, loading: trailerLoading } = useQuery(
     isTV ? TV_TRAILER_QUERY : MOVIE_TRAILER_QUERY,
     {
-      variables: { id },
+      variables: { id, type: "Trailer" },
     }
   );
 
@@ -91,7 +91,7 @@ export default function Details() {
     : trailerData?.trailers?.[0]?.key || "";
 
   if (!media) return null;
-
+  console.log("media==============", id);
   return (
     <MediaContainer
       loading={detailsLoading || trailerLoading}

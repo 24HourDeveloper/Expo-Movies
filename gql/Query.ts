@@ -34,8 +34,8 @@ export const MOVIE_DETAILS_QUERY = gql`
 `
 
 export const MOVIE_TRAILER_QUERY = gql`
-  query Trailers($id: String) {
-    trailers(id: $id) {
+  query Trailers($id: String, $type: String) {
+    trailers(id: $id, type: $type) {
       key
     }
   }
@@ -71,8 +71,8 @@ export const TV_DETAILS_QUERY = gql`
   }
 `
 export const TV_TRAILER_QUERY = gql`
-  query TvTrailers($id: String!) {
-    tvTrailers(id: $id) {
+  query TvTrailers($id: String!, $type: String) {
+    tvTrailers(id: $id, type: $type) {
       key
     }
   }

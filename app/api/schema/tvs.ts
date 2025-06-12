@@ -25,14 +25,14 @@ export const tvsTypeDefs = `
 
   extend type Query {
     tv(id: String): TV
-    tvTrailers(id: String): [TvTrailer]
+    tvTrailers(id: String, type: String): [TvTrailer]
     season(id: String!, season_number: Int!): Season
   }
 `
 
 export const tvsResolvers = {
   Query: {
-    tv: async (_, args: any) => {
+    tv: async (_: any, args: any) => {
       try {
         const response = await fetch(`https://api.themoviedb.org/3/tv/${args.id}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`);
         if (!response.ok) {
@@ -54,12 +54,13 @@ export const tvsResolvers = {
         throw error;
       }
     },
-    tvTrailers: async (_, args: any) => {
+    tvTrailers: async (_: any, args: any) => {
       const response = await fetch(`https://api.themoviedb.org/3/tv/${args.id}/videos?api_key=${process.env.MOVIE_API_KEY}&language=en-US`);
       const data = await response.json();
-      return data.results;
+      const trailers = data.results.filter((trailer: any) => trailer.type === args.type)
+      return trailers;
     },
-    season: async (_, args: any) => {
+    season: async (_: any, args: any) => {
       try {
         const response = await fetch(
           `https://api.themoviedb.org/3/tv/${args.id}/season/${args.season_number}?api_key=${process.env.MOVIE_API_KEY}&language=en-US`
