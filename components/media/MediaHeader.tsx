@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  View,
   Image,
   TouchableOpacity,
   Platform,
@@ -23,7 +22,7 @@ export default function MediaHeader({
   const isSmallScreen = Dimensions.get("window").width <= 850;
   const imageUrl = isPoster
     ? `${process.env.EXPO_PUBLIC_MOVIE_IMAGE_URL}${imagePath}`
-    : `${process.env.EXPO_PUBLIC_MOVIE_ORIGINAL_URL}${imagePath}`;
+    : `https://image.tmdb.org/t/p/original${imagePath}`;
 
   return (
     <>

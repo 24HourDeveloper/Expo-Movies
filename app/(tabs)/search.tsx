@@ -32,9 +32,7 @@ const SearchMovies = () => {
         value={query}
         onChangeText={searchQuery}
       />
-      <View style={{ flex: 1, paddingHorizontal: 25 }}>
-        <List items={data?.search} loading={loading} />
-      </View>
+      <List items={data?.search} loading={loading} />
     </View>
   );
 };

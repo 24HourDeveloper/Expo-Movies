@@ -9,7 +9,6 @@ import {
   TV_DETAILS_QUERY,
   TV_TRAILER_QUERY,
 } from "../../gql/Query";
-import TvItem from "../../components/TvItem";
 import {
   MediaContainer,
   MediaHeader,

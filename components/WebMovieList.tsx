@@ -1,7 +1,7 @@
 import { ActivityIndicator, useWindowDimensions } from "react-native";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import MovieItem from "./MovieItem";
 import "../styles/scrollbar.css";
+import Item from "./Item";
 
 export type Movie = {
   id: number;
@@ -50,17 +50,16 @@ export function WebMovieList({
         display: "grid",
         gridTemplateColumns: `repeat(${responsiveCols}, 1fr)`,
         gap: width >= 700 ? "16px" : "8px",
-        //padding: width >= 620 ? "16px" : "8px",
         width: "100%",
         minHeight: "100%",
         overflow: "scroll",
       }}
     >
       {movies.map((item) => (
-        <MovieItem
+        <Item
           key={item.id.toString()}
-          itemID={item.id}
-          itemImage={item.poster_path}
+          path={`/details/${item.id}`}
+          poster={item.poster_path}
         />
       ))}
       <div

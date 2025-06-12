@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import MovieItem from "./MovieItem";
 import { WebMovieList } from "./WebMovieList";
 import Item from "./Item";
 
