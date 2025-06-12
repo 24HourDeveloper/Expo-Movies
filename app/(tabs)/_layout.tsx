@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 import { Platform } from "react-native";
 import WebNav from "../../components/WebNav";
 import { useWindowDimensions } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export default function TabLayout() {
   const { width } = useWindowDimensions();
@@ -47,6 +48,15 @@ export default function TabLayout() {
           ),
         }}
       /> */}
+      <Tabs.Screen
+        name="tv"
+        options={{
+          title: "TV",
+          tabBarIcon: ({ color, focused }) => (
+            <Feather size={28} name="tv" color={focused ? "white" : color} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="search"
         options={{

@@ -1,37 +1,47 @@
-import { useQuery } from '@apollo/client'
-import { useState, useEffect } from 'react'
-import { MOVIES_QUERY } from '../gql/Query'
-import { Movie } from '../components/MovieList'
+import { DocumentNode, useLazyQuery, useQuery } from '@apollo/client'
+import { useFocusEffect } from 'expo-router'
+import { useState, useEffect, useCallback } from 'react'
+import { EntitiesItem } from '../components/List'
 
-export default function usePagination() {
+export default function usePagination(query: DocumentNode, type: string) {
   const [page, setPage] = useState<number>(1)
-  const [movies, setMovies] = useState<[] | Movie[]>([])
+  const [items, setItems] = useState<[] | EntitiesItem[]>([])
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
 
-  const { data, loading, refetch } = useQuery(MOVIES_QUERY, {
+  const {data, loading, error, refetch} = useQuery(query, {
     variables: {
       page,
+      type,
       with_watch_provider: selectedProvider,
       with_genres: selectedGenre,
-    }
+    },
+    fetchPolicy: 'no-cache'
   })
 
-  const addMoreMovies = () => {
-    setMovies((prevMovies) => [...prevMovies, ...data.movies])
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     loadList()
+  //   }, [])
+  // )
+
+  const addMoreItems = () => {
+    if (data?.list) {
+      setItems((prevItems) => [...prevItems, ...data.list])
+    }
   }
 
   useEffect(() => {
-    if(data && page === 1) {
-      setMovies(data.movies)
+    if (data?.list && page === 1) {
+      setItems(data.list)
     }
-  }, [data])
+  }, [data, page])
 
   useEffect(() => {
-    if(page !== 1 && !loading) {
-      addMoreMovies()
+    if (page !== 1 && !loading && data?.list) {
+      addMoreItems()
     }
-  }, [page, loading])
+  }, [page, loading, data])
 
   const handleFilterChange = (provider: string | null, genre: string | null) => {
     setSelectedProvider(provider)
@@ -47,9 +57,10 @@ export default function usePagination() {
   return {
     page,
     setPage,
-    movies,
+    items,
     refetch,
     loading,
+    error,
     selectedProvider,
     selectedGenre,
     handleFilterChange

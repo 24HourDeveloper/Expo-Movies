@@ -10,7 +10,7 @@ if (__DEV__) {
 
 const getGraphqlUrl = () => {
   if (__DEV__) {
-    return 'http://localhost:8081/api/graphql';
+    return Platform.OS === 'ios' || Platform.OS === 'android' ? 'http://10.0.0.3:8081/api/graphql' : 'http://localhost:8081/api/graphql';
   }
 
   if (Platform.OS === 'web') {
@@ -19,7 +19,7 @@ const getGraphqlUrl = () => {
 
   return 'https://expo-movies.expo.app/api/graphql'; // For mobile
 }
-console.log("getGraphqlUrl", getGraphqlUrl());
+
 // Initialize Apollo Client
 const client = new ApolloClient({
   uri: getGraphqlUrl(),

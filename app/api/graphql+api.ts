@@ -1,6 +1,8 @@
-import { buildSchema, graphql } from 'graphql';
-//import { schema } from "./schema";
+import { graphql } from 'graphql';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { moviesResolvers, moviesTypeDefs } from './schema/movies';
+import { tvsTypeDefs, tvsResolvers } from './schema/tvs';
+import { listTypeDefs, listResolvers } from './schema/list';
 
 const graphiqlHTML = `
 <!DOCTYPE html>
@@ -22,7 +24,23 @@ const graphiqlHTML = `
 </html>
 `;
 
-const schema = buildSchema(moviesTypeDefs);
+const schema = makeExecutableSchema({
+  typeDefs: `${moviesTypeDefs} ${tvsTypeDefs} ${listTypeDefs}`,
+  resolvers: {
+    Query: {
+      ...moviesResolvers.Query,
+      ...tvsResolvers.Query,
+      ...listResolvers.Query,
+    },
+    List: {
+      __resolveType: (obj: any) => {
+        if ('title' in obj) return 'Movie';
+        if ('name' in obj) return 'TV';
+        return null;
+      }
+    }
+  }
+});
 
 async function handleGraphQLRequest(req: Request) {
   try {
@@ -31,7 +49,11 @@ async function handleGraphQLRequest(req: Request) {
     const result = await graphql({
       schema,
       source: query,
-      rootValue: moviesResolvers.Query,
+      rootValue: {
+        ...moviesResolvers.Query,
+        ...tvsResolvers.Query,
+        ...listResolvers.Query,
+      },
       variableValues: variables,
     });
 
@@ -68,7 +90,11 @@ export const GET = async (req: Request) => {
     const result = await graphql({
       schema,
       source: query,
-      rootValue: moviesResolvers.Query,
+      rootValue: {
+        ...moviesResolvers.Query,
+        ...tvsResolvers.Query,
+        ...listResolvers.Query,
+      },
       variableValues: variables ? JSON.parse(variables) : undefined,
     });
 
